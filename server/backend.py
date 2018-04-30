@@ -89,7 +89,8 @@ class UserResource(Resource):
     @api.expect(new_user_shape, validate=True)
     @api.marshal_with(user_shape, envelope="new_user")
     @api.doc(responses={
-        401: "Not authenticated OR Malformed request",
+        400: "Malformed request OR User exists",
+        401: "Not authenticated",
         403: "Not admin"
     })
     def post(self, public_id=None):
@@ -97,7 +98,11 @@ class UserResource(Resource):
         self._abort_if_not_admin()
         data = api.payload
         if not data or not "name" in data or not "password" in data:
-            api.abort(401, "Malformed request")
+            api.abort(400, "Malformed request")
+        current_user = get_jwt_identity()
+        user = User.query.filter_by(name=current_user["name"]).first()
+        if user:
+            api.abort(400, "A user with this name already exists")
         new_user = User(public_id=str(uuid.uuid4()),
                         name=data["name"],
                         password_hash=generate_password_hash(data["password"]),
@@ -199,7 +204,8 @@ class TodoResource(Resource):
     @api.expect(new_todo_shape, validate=True)
     @api.marshal_with(todo_shape, envelope="new_todo")
     @api.doc(responses={
-        401: "Not authenticated OR Malformed request"
+        400: "Malformed request",
+        401: "Not authenticated"
     })
     def post(self, id=None):
         # Create a new todo
@@ -207,7 +213,7 @@ class TodoResource(Resource):
         user = User.query.filter_by(name=current_user["name"]).first()
         data = api.payload
         if not data or not "text" in data:
-            api.abort(401, "Malformed request")
+            api.abort(400, "Malformed request")
         new_todo = Todo(text=data["text"],
                         complete=False,
                         user=user.id)
