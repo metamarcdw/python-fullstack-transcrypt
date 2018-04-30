@@ -1,3 +1,3 @@
 {
-    "python.linting.pylintArgs": ["--disable=E1101,C0111,R0903,C0103,R0201,W0212,W0622,W0613"]
+    "python.linting.pylintArgs": ["--disable=E1101,C0111,R0903,C0103,R0201,W0212,W0622,W0613,C0326"]
 }

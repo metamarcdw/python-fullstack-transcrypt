@@ -8,8 +8,19 @@ from flask_jwt_extended import(
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
+authorizations = {
+    "bearer": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization"
+    },
+    "basic": {
+        "type": "basic"
+    }
+}
+
 app = Flask(__name__)
-api = Api(app)
+api = Api(app, authorizations=authorizations)
 
 FILE_PATH = r"C:\Users\cypher\Desktop\fullstack-react\react-native\todos_fs\server"
 app.config["JWT_SECRET_KEY"] = "asecret"
@@ -54,6 +65,11 @@ class UserResource(Resource):
 
     @jwt_required
     @api.marshal_with(user_shape, envelope="users")
+    @api.doc(responses={
+        401: "Not authenticated",
+        403: "Not admin",
+        404: "Not found"
+    })
     def get(self, public_id=None):
         self._abort_if_not_admin()
         if public_id:
@@ -72,6 +88,11 @@ class UserResource(Resource):
     @jwt_required
     @api.expect(new_user_shape, validate=True)
     @api.marshal_with(user_shape, envelope="new_user")
+    @api.doc(responses={
+        401: "Malformed request",
+        401: "Not authenticated",
+        403: "Not admin"
+    })
     def post(self, public_id=None):
         # Create one user
         self._abort_if_not_admin()
@@ -88,6 +109,11 @@ class UserResource(Resource):
 
     @jwt_required
     @api.marshal_with(user_shape, envelope="promoted_user")
+    @api.doc(responses={
+        401: "Not authenticated",
+        403: "Not admin",
+        404: "Not found"
+    })
     def put(self, public_id=None):
         # Promote one user
         self._abort_if_not_admin()
@@ -99,6 +125,12 @@ class UserResource(Resource):
         return user
 
     @jwt_required
+    @api.doc(responses={
+        200: "Success",
+        401: "Not authenticated",
+        403: "Not admin",
+        404: "Not found"
+    })
     def delete(self, public_id=None):
         # Delete one user
         self._abort_if_not_admin()
@@ -110,7 +142,14 @@ class UserResource(Resource):
         return {"message": "User deleted successfully."}
 
 @api.route("/login")
+@api.doc(responses={ 401: "Login failed" })
 class LoginResource(Resource):
+    token_shape = api.model("token_shape", {
+        "token": fields.String
+    })
+
+    @api.doc(security={"basic": authorizations["basic"]})
+    @api.marshal_with(token_shape)
     def get(self):
         auth = request.authorization
         if not auth or not auth["username"] or not auth["password"]:
@@ -137,6 +176,10 @@ class TodoResource(Resource):
 
     @jwt_required
     @api.marshal_with(todo_shape, envelope="todos")
+    @api.doc(responses={
+        401: "Not authenticated",
+        404: "Not found"
+    })
     def get(self, id=None):
         current_user = get_jwt_identity()
         user = User.query.filter_by(name=current_user["name"]).first()
@@ -156,6 +199,10 @@ class TodoResource(Resource):
     @jwt_required
     @api.expect(new_todo_shape, validate=True)
     @api.marshal_with(todo_shape, envelope="new_todo")
+    @api.doc(responses={
+        401: "Malformed request",
+        401: "Not authenticated"
+    })
     def post(self, id=None):
         # Create a new todo
         current_user = get_jwt_identity()
@@ -172,6 +219,10 @@ class TodoResource(Resource):
 
     @jwt_required
     @api.marshal_with(todo_shape, envelope="completed_todo")
+    @api.doc(responses={
+        401: "Not authenticated",
+        404: "Not found"
+    })
     def put(self, id=None):
         # Complete a todo
         current_user = get_jwt_identity()
@@ -184,6 +235,11 @@ class TodoResource(Resource):
         return todo
 
     @jwt_required
+    @api.doc(responses={
+        200: "Success",
+        401: "Not authenticated",
+        404: "Not found"
+    })
     def delete(self, id=None):
         # Delete a todo
         current_user = get_jwt_identity()
