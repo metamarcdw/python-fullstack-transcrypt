@@ -99,9 +99,7 @@ class UserResource(Resource):
         data = api.payload
         if not data or not "name" in data or not "password" in data:
             api.abort(400, "Malformed request")
-        current_user = get_jwt_identity()
-        user = User.query.filter_by(name=current_user["name"]).first()
-        if user:
+        if User.query.filter_by(name=data["name"]).first():
             api.abort(400, "A user with this name already exists")
         new_user = User(public_id=str(uuid.uuid4()),
                         name=data["name"],
