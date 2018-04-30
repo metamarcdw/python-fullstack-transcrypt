@@ -89,8 +89,7 @@ class UserResource(Resource):
     @api.expect(new_user_shape, validate=True)
     @api.marshal_with(user_shape, envelope="new_user")
     @api.doc(responses={
-        401: "Malformed request",
-        401: "Not authenticated",
+        401: "Not authenticated OR Malformed request",
         403: "Not admin"
     })
     def post(self, public_id=None):
@@ -142,14 +141,14 @@ class UserResource(Resource):
         return {"message": "User deleted successfully."}
 
 @api.route("/login")
-@api.doc(responses={ 401: "Login failed" })
 class LoginResource(Resource):
     token_shape = api.model("token_shape", {
         "token": fields.String
     })
 
-    @api.doc(security={"basic": authorizations["basic"]})
     @api.marshal_with(token_shape)
+    @api.doc(security={"basic": authorizations["basic"]},
+             responses={401: "Login failed"})
     def get(self):
         auth = request.authorization
         if not auth or not auth["username"] or not auth["password"]:
@@ -200,8 +199,7 @@ class TodoResource(Resource):
     @api.expect(new_todo_shape, validate=True)
     @api.marshal_with(todo_shape, envelope="new_todo")
     @api.doc(responses={
-        401: "Malformed request",
-        401: "Not authenticated"
+        401: "Not authenticated OR Malformed request"
     })
     def post(self, id=None):
         # Create a new todo
