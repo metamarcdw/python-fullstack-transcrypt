@@ -70,7 +70,7 @@ class UserResource(Resource):
             return users
 
     @jwt_required
-    @api.expect(new_user_shape)
+    @api.expect(new_user_shape, validate=True)
     @api.marshal_with(user_shape, envelope="new_user")
     def post(self, public_id=None):
         # Create one user
@@ -154,7 +154,7 @@ class TodoResource(Resource):
             return todos
 
     @jwt_required
-    @api.expect(new_todo_shape)
+    @api.expect(new_todo_shape, validate=True)
     @api.marshal_with(todo_shape, envelope="new_todo")
     def post(self, id=None):
         # Create a new todo
