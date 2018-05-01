@@ -85,17 +85,13 @@ class UserResource(Resource):
                 api.abort(404, "No users found")
             return users
 
-    @jwt_required
     @api.expect(new_user_shape, validate=True)
     @api.marshal_with(user_shape, envelope="new_user")
     @api.doc(responses={
-        400: "Malformed request OR User exists",
-        401: "Not authenticated",
-        403: "Not admin"
+        400: "Malformed request OR User exists"
     })
     def post(self, public_id=None):
         # Create one user
-        self._abort_if_not_admin()
         data = api.payload
         if not data or not "name" in data or not "password" in data:
             api.abort(400, "Malformed request")
