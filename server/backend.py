@@ -54,8 +54,8 @@ class UserResource(Resource):
         "admin": fields.Boolean
     })
     new_user_shape = api.model("new_user_shape", {
-        "name": fields.String,
-        "password": fields.String
+        "name": fields.String(required=True),
+        "password": fields.String(required=True)
     })
 
     def _abort_if_not_admin(self):
@@ -169,7 +169,7 @@ class TodoResource(Resource):
         "complete": fields.Boolean
     })
     new_todo_shape = api.model("new_todo_shape", {
-        "text": fields.String
+        "text": fields.String(required=True)
     })
 
     @jwt_required
