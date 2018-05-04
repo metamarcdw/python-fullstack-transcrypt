@@ -23,12 +23,13 @@ app = Flask(__name__)
 api = Api(app, authorizations=authorizations)
 
 FILE_PATH = r"C:\Users\cypher\Desktop\fullstack-react\react-native\todos_fs\server"
-app.config["JWT_SECRET_KEY"] = "asecret"
 app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{FILE_PATH}\\db.sqlite3"
+app.config["JWT_SECRET_KEY"] = "asecret"
 
+db = SQLAlchemy(app)
 jwt = JWTManager(app)
 jwt._set_error_handler_callbacks(api)
-db = SQLAlchemy(app)
+# https://github.com/vimalloc/flask-jwt-extended/issues/83
 
 
 class User(db.Model):
@@ -51,24 +52,29 @@ class Todo(db.Model):
 @api.route("/user", "/user/<string:public_id>")
 class UserResource(Resource):
     user_shape = api.model("user_shape", {
-        "id": fields.String(description="This user's public ID",
-                            example="1226637d-6d9a-4d5b-a7c6-9b1d5bba98f8",
-                            attribute="public_id",
-                            required=True),
-        "name": fields.String(description="This user's name",
-                              example="metamarcdw",
-                              required=True),
+        "id": fields.String(
+            description="This user's public ID",
+            example="1226637d-6d9a-4d5b-a7c6-9b1d5bba98f8",
+            attribute="public_id",
+            required=True),
+        "name": fields.String(
+            description="This user's name",
+            example="metamarcdw",
+            required=True),
         "password_hash": fields.String(
             description="This user's hashed password",
             example="pbkdf2:sha256:50000$Dm5rUTw7$...",
             required=True),
-        "admin": fields.Boolean(description="This user's admin status",
-                                example="false",
-                                required=True)
+        "admin": fields.Boolean(
+            description="This user's admin status",
+            example="false",
+            required=True)
     })
     new_user_shape = api.model("new_user_shape", {
-        "name": fields.String(required=True, min_length=1, max_length=30),
-        "password": fields.String(required=True, min_length=1)
+        "name": fields.String(
+            min_length=1, max_length=30, required=True),
+        "password": fields.String(
+            min_length=1, required=True)
     })
 
     def _abort_if_not_admin(self):
@@ -182,18 +188,22 @@ class LoginResource(Resource):
 @api.route("/todo", "/todo/<int:id>")
 class TodoResource(Resource):
     todo_shape = api.model("todo_shape", {
-        "id": fields.Integer(description="A unique identifier for todos",
-                             example="5",
-                             required=True),
-        "text": fields.String(description="Some text describing your task",
-                              example="Do a thing.",
-                              required=True),
-        "complete": fields.Boolean(description="This todo's completion status",
-                                   example="true",
-                                   required=True)
+        "id": fields.Integer(
+            description="A unique identifier for todos",
+            example="5",
+            required=True),
+        "text": fields.String(
+            description="Some text describing your task",
+            example="Do a thing.",
+            required=True),
+        "complete": fields.Boolean(
+            description="This todo's completion status",
+            example="true",
+            required=True)
     })
     new_todo_shape = api.model("new_todo_shape", {
-        "text": fields.String(required=True, min_length=1, max_length=30)
+        "text": fields.String(
+            min_length=1, max_length=30, required=True)
     })
 
     @jwt_required
