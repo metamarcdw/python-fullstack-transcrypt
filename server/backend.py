@@ -100,8 +100,6 @@ class UserResource(Resource):
         else:
             # Get all users
             users = User.query.all()
-            if not users:
-                api.abort(404, "No users found")
             return users
 
     @api.expect(new_user_shape, validate=True)
