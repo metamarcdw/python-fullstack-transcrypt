@@ -30,12 +30,14 @@ jwt = JWTManager(app)
 jwt._set_error_handler_callbacks(api)
 db = SQLAlchemy(app)
 
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     public_id = db.Column(db.String(50), unique=True)
     name = db.Column(db.String(50), nullable=False)
     password_hash = db.Column(db.String(80), nullable=False)
     admin = db.Column(db.Boolean)
+
 
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -45,17 +47,28 @@ class Todo(db.Model):
                      db.ForeignKey('user.id'),
                      nullable=False)
 
+
 @api.route("/user", "/user/<string:public_id>")
 class UserResource(Resource):
     user_shape = api.model("user_shape", {
-        "id": fields.String(attribute="public_id"),
-        "name": fields.String,
-        "password_hash": fields.String,
-        "admin": fields.Boolean
+        "id": fields.String(description="This user's public ID",
+                            example="1226637d-6d9a-4d5b-a7c6-9b1d5bba98f8",
+                            attribute="public_id",
+                            required=True),
+        "name": fields.String(description="This user's name",
+                              example="metamarcdw",
+                              required=True),
+        "password_hash": fields.String(
+            description="This user's hashed password",
+            example="pbkdf2:sha256:50000$Dm5rUTw7$...",
+            required=True),
+        "admin": fields.Boolean(description="This user's admin status",
+                                example="false",
+                                required=True)
     })
     new_user_shape = api.model("new_user_shape", {
-        "name": fields.String(required=True),
-        "password": fields.String(required=True)
+        "name": fields.String(required=True, min_length=1, max_length=30),
+        "password": fields.String(required=True, min_length=1)
     })
 
     def _abort_if_not_admin(self):
@@ -139,10 +152,14 @@ class UserResource(Resource):
         db.session.commit()
         return {"message": "User deleted successfully."}
 
+
 @api.route("/login")
 class LoginResource(Resource):
     token_shape = api.model("token_shape", {
-        "token": fields.String
+        "token": fields.String(
+            description="A JWT associated with the current user's session",
+            example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+            required=True)
     })
 
     @api.marshal_with(token_shape)
@@ -161,15 +178,22 @@ class LoginResource(Resource):
         expiry = datetime.timedelta(minutes=30)
         return {"token": create_access_token(identity, expires_delta=expiry)}
 
+
 @api.route("/todo", "/todo/<int:id>")
 class TodoResource(Resource):
     todo_shape = api.model("todo_shape", {
-        "id": fields.Integer,
-        "text": fields.String,
-        "complete": fields.Boolean
+        "id": fields.Integer(description="A unique identifier for todos",
+                             example="5",
+                             required=True),
+        "text": fields.String(description="Some text describing your task",
+                              example="Do a thing.",
+                              required=True),
+        "complete": fields.Boolean(description="This todo's completion status",
+                                   example="true",
+                                   required=True)
     })
     new_todo_shape = api.model("new_todo_shape", {
-        "text": fields.String(required=True)
+        "text": fields.String(required=True, min_length=1, max_length=30)
     })
 
     @jwt_required
@@ -248,6 +272,7 @@ class TodoResource(Resource):
         db.session.delete(todo)
         db.session.commit()
         return {"message": "Todo deleted successfully."}
+
 
 if __name__ == "__main__":
     app.run(debug=True)
