@@ -1,3 +1,4 @@
+import os
 import datetime
 import uuid
 from flask import Flask, request
@@ -22,8 +23,10 @@ authorizations = {
 app = Flask(__name__)
 api = Api(app, authorizations=authorizations)
 
-FILE_PATH = r"C:\Users\cypher\Desktop\fullstack-react\react-native\todos_fs\server"
-app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{FILE_PATH}\\db.sqlite3"
+DIR_PATH = \
+    r"C:\Users\cypher\Desktop\fullstack-react\react-native\todos_fs\server"
+FULL_PATH = os.path.join(DIR_PATH, "db.sqlite3")
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{FULL_PATH}"
 app.config["JWT_SECRET_KEY"] = "asecret"
 
 db = SQLAlchemy(app)
