@@ -129,6 +129,7 @@ class UserResource(Resource):
     @jwt_required
     @api.marshal_with(user_shape, envelope="promoted_user")
     @api.doc(responses={
+        400: "Already admin",
         401: "Not authenticated",
         403: "Not admin",
         404: "Not found"
@@ -139,6 +140,8 @@ class UserResource(Resource):
         user = User.query.filter_by(public_id=public_id).first()
         if not user:
             api.abort(404, "User not found")
+        if user.admin:
+            api.abort(400, "User is already an admin")
         user.admin = True
         db.session.commit()
         return user
