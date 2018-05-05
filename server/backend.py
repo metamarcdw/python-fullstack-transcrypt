@@ -159,10 +159,10 @@ class UserResource(Resource):
         current_user = get_jwt_identity()
         self._abort_if_not_admin(current_user=current_user)
         user = User.query.filter_by(public_id=public_id).first()
-        if user.name == current_user["name"]:
-            api.abort(400, "Cannot delete your own user")
         if not user:
             api.abort(404, "User not found")
+        if user.name == current_user["name"]:
+            api.abort(400, "Cannot delete your own user")
         db.session.delete(user)
         db.session.commit()
         return {"message": "User deleted successfully."}
