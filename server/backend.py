@@ -80,8 +80,9 @@ class UserResource(Resource):
             min_length=1, required=True)
     })
 
-    def _abort_if_not_admin(self):
-        current_user = get_jwt_identity()
+    def _abort_if_not_admin(self, current_user=None):
+        if not current_user:
+            current_user = get_jwt_identity()
         if not current_user["admin"]:
             api.abort(403, "Must be admin")
 
@@ -145,14 +146,18 @@ class UserResource(Resource):
     @jwt_required
     @api.doc(responses={
         200: "Success",
+        400: "Cannot delete self",
         401: "Not authenticated",
         403: "Not admin",
         404: "Not found"
     })
     def delete(self, public_id=None):
         # Delete one user
-        self._abort_if_not_admin()
+        current_user = get_jwt_identity()
+        self._abort_if_not_admin(current_user=current_user)
         user = User.query.filter_by(public_id=public_id).first()
+        if user.name == current_user["name"]:
+            api.abort(400, "Cannot delete your own user")
         if not user:
             api.abort(404, "User not found")
         db.session.delete(user)
