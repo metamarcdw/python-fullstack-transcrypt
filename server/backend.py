@@ -7,6 +7,7 @@ from flask_jwt_extended import(
     JWTManager, create_access_token, get_jwt_identity, jwt_required
 )
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 
 authorizations = {
@@ -41,6 +42,7 @@ class User(db.Model):
     name = db.Column(db.String(50), nullable=False)
     password_hash = db.Column(db.String(80), nullable=False)
     admin = db.Column(db.Boolean)
+    todos = relationship("Todo", cascade="all,delete")
 
 
 class Todo(db.Model):
