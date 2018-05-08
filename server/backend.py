@@ -7,7 +7,6 @@ from flask_jwt_extended import(
     JWTManager, create_access_token, get_jwt_identity, jwt_required
 )
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 
 authorizations = {
@@ -38,20 +37,20 @@ jwt._set_error_handler_callbacks(api)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    public_id = db.Column(db.String(50), unique=True)
-    name = db.Column(db.String(50), nullable=False)
+    public_id = db.Column(db.String(30), unique=True, nullable=False)
+    name = db.Column(db.String(30), nullable=False)
     password_hash = db.Column(db.String(80), nullable=False)
-    admin = db.Column(db.Boolean)
-    todos = relationship("Todo", cascade="all,delete")
+    admin = db.Column(db.Boolean, nullable=False)
+    todos = db.relationship("Todo", backref="user", cascade="all,delete")
 
 
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String(50), nullable=False)
-    complete = db.Column(db.Boolean)
-    user = db.Column(db.Integer,
-                     db.ForeignKey('user.id'),
-                     nullable=False)
+    text = db.Column(db.String(30), nullable=False)
+    complete = db.Column(db.Boolean, nullable=False)
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('user.id'),
+                        nullable=False)
 
 
 @api.route("/user", "/user/<string:public_id>")
