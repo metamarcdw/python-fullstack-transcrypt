@@ -184,13 +184,14 @@ class LoginResource(Resource):
              responses={401: "Login failed"})
     def get(self):
         auth = request.authorization
-        if not auth or not auth["username"] or not auth["password"]:
+        if not auth or not all(k in auth for k in ("username", "password")):
             api.abort(401, "Login attempt failed")
-        user = User.query.filter_by(name=auth["username"]).first()
-        if not user:
+
+        name, password = auth["username"], auth["password"]
+        user = User.query.filter_by(name=name).first()
+        if not user or not check_password_hash(user.password_hash, password):
             api.abort(401, "Login attempt failed")
-        if not check_password_hash(user.password_hash, auth["password"]):
-            api.abort(401, "Login attempt failed")
+
         identity = {"name": user.name, "admin": user.admin}
         expiry = datetime.timedelta(minutes=30)
         return {"token": create_access_token(identity, expires_delta=expiry)}
