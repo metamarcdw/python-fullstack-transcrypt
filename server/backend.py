@@ -250,7 +250,7 @@ class TodoResource(Resource):
         data = api.payload
         new_todo = Todo(text=data["text"],
                         complete=False,
-                        user=user.id)
+                        user_id=user.id)
         db.session.add(new_todo)
         db.session.commit()
         return new_todo
