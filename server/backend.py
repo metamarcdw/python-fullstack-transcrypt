@@ -7,6 +7,7 @@ from flask_jwt_extended import(
     JWTManager, create_access_token, get_jwt_identity, jwt_required
 )
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
 
 authorizations = {
@@ -38,7 +39,7 @@ jwt._set_error_handler_callbacks(api)
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     public_id = db.Column(db.String(30), unique=True, nullable=False)
-    name = db.Column(db.String(30), nullable=False)
+    name = db.Column(db.String(30), unique=True, nullable=False)
     password_hash = db.Column(db.String(80), nullable=False)
     admin = db.Column(db.Boolean, nullable=False)
     todos = db.relationship("Todo", backref="user", cascade="all,delete")
@@ -114,15 +115,17 @@ class UserResource(Resource):
     })
     def post(self, public_id=None):
         # Create one user
-        data = api.payload
-        if User.query.filter_by(name=data["name"]).first():
+        name, password = api.payload["name"], api.payload["password"]
+        try:
+            new_user = User(public_id=str(uuid.uuid4()),
+                            name=name,
+                            password_hash=generate_password_hash(password),
+                            admin=False)
+            db.session.add(new_user)
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
             api.abort(400, "A user with this name already exists")
-        new_user = User(public_id=str(uuid.uuid4()),
-                        name=data["name"],
-                        password_hash=generate_password_hash(data["password"]),
-                        admin=False)
-        db.session.add(new_user)
-        db.session.commit()
         return new_user
 
     @jwt_required
@@ -225,16 +228,15 @@ class TodoResource(Resource):
         user = User.query.filter_by(name=current_user["name"]).first()
         if id:
             # Get one todo
-            todo = Todo.query.filter_by(id=id, user=user.id).first()
+            todo = Todo.query.filter_by(id=id, user=user).first()
             if not todo:
                 api.abort(404, "Todo not found")
             return todo
         else:
             # Get all todos for this user
-            todos = Todo.query.filter_by(user=user.id).all()
-            if not todos:
+            if not user.todos:
                 api.abort(404, "No todos found")
-            return todos
+            return user.todos
 
     @jwt_required
     @api.expect(new_todo_shape, validate=True)
@@ -247,10 +249,10 @@ class TodoResource(Resource):
         # Create a new todo
         current_user = get_jwt_identity()
         user = User.query.filter_by(name=current_user["name"]).first()
-        data = api.payload
-        new_todo = Todo(text=data["text"],
+        text = api.payload["text"]
+        new_todo = Todo(text=text,
                         complete=False,
-                        user_id=user.id)
+                        user=user)
         db.session.add(new_todo)
         db.session.commit()
         return new_todo
@@ -265,7 +267,7 @@ class TodoResource(Resource):
         # Complete a todo
         current_user = get_jwt_identity()
         user = User.query.filter_by(name=current_user["name"]).first()
-        todo = Todo.query.filter_by(id=id, user=user.id).first()
+        todo = Todo.query.filter_by(id=id, user=user).first()
         if not todo:
             api.abort(404, "Todo not found")
         todo.complete = True
@@ -282,7 +284,7 @@ class TodoResource(Resource):
         # Delete a todo
         current_user = get_jwt_identity()
         user = User.query.filter_by(name=current_user["name"]).first()
-        todo = Todo.query.filter_by(id=id, user=user.id).first()
+        todo = Todo.query.filter_by(id=id, user=user).first()
         if not todo:
             api.abort(404, "Todo not found")
         db.session.delete(todo)
