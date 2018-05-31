@@ -1,0 +1,25 @@
+.padding {
+  padding: 25px;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: space-around;
+  width: 80%;
+}
+
+.list-item {
+  display: flex;
+  flex-grow: 1;
+  font-size: 1.3em;
+}

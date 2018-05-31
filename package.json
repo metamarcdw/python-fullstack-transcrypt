@@ -1,0 +1,32 @@
+{
+  "name": "react-transcrypt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/__javascript__/bundle.js",
+  "scripts": {
+    "start": "npx concurrently --kill-others \"npx nodemon -e py --watch src --exec \"make compile\"\" \"npx webpack-dev-server\"",
+    "win": "npx concurrently --kill-others \"npx nodemon -e py --watch src --exec \"compile\"\" \"npx webpack-dev-server\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-preset-react": "^6.24.1",
+    "concurrently": "^3.5.1",
+    "nodemon": "^1.17.2",
+    "webpack": "^4.1.1",
+    "webpack-cli": "^2.0.12",
+    "webpack-dev-server": "^3.1.1"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-redux": "^5.0.7",
+    "reactstrap": "^6.0.1",
+    "redux": "^4.0.0",
+    "redux-logger": "^3.0.6",
+    "redux-promise-middleware": "^5.1.1"
+  }
+}

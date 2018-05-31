@@ -1,2 +1,5 @@
 __pycache__/
 db.sqlite3
+.mypy_cache/
+__javascript__/
+node_modules/
