@@ -1,4 +1,4 @@
-from Component_py.stubs import require, __pragma__, console  # __:skip
+from Component_py.stubs import require, __pragma__  # __:skip
 from Component_py.component import Component, destruct
 from containers.LoginFormContainer import LoginFormContainer
 from containers.FormPanelContainer import FormPanelContainer
@@ -25,16 +25,6 @@ class App(Component):
                 }
             ]
         }
-
-    def on_click_login(self, e):
-        e.preventDefault()
-        username, password = destruct(
-            self.props["login_form"], "username_text", "password_text")
-        if username and password:
-            self.props.do_login(username, password)
-
-    def on_click_add(self):
-        console.log("ADD")
 
     def render(self):
         def render_login_panel():

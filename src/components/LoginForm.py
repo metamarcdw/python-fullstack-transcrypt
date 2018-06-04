@@ -12,13 +12,20 @@ def LoginForm(props):
     def on_password_change(e):
         props.login_form_update(None, e.target.value)
 
+    def on_click_login(e):
+        username, password = destruct(
+            props["login_form"], "username_text", "password_text")
+        if username and password:
+            props.do_login(username, password)
+        e.preventDefault()
+
     return __pragma__("xtrans", None, "{}", """ (
         <Form className="padding">
             <FormGroup>
                 <Label for="username_input">Enter your username</Label>
                 <Input
                     onChange={on_username_change}
-                    value={props.data.username_text}
+                    value={props.login_form.username_text}
                     placeholder="Your Username"
                     id="username_input"
                 />
@@ -27,13 +34,13 @@ def LoginForm(props):
                 <Label for="password_input">Enter your password</Label>
                 <Input
                     onChange={on_password_change}
-                    value={props.data.password_text}
+                    value={props.login_form.password_text}
                     type="password"
                     id="password_input"
                 />
             </FormGroup>
             <Button
-                onClick={props.on_click}
+                onClick={on_click_login}
             >Login</Button>
         </Form>
     ); """)

@@ -6,18 +6,29 @@ from actions.types import (
 
 
 initial_state = {
-    "todos": []
+    "loading": False,
+    "todos": [],
+    "error": None
 }
 
 
 def todo_list_reducer(state=initial_state, action=None):
     type_ = action["type"]
     if type_ == FETCH_ALL_TODOS_PENDING:
-        return state
+        return Object.assign({}, state, {
+            "loading": True
+        })
     elif type_ == FETCH_ALL_TODOS_FULFILLED:
         return Object.assign({}, state, {
+            "loading": False,
             "todos": action.payload.data["todos"]
         })
     elif type_ == FETCH_ALL_TODOS_REJECTED:
-        return state
+        msg = action.payload.response.data["message"]
+        if not msg:
+            msg = "Unknown Error."
+        return Object.assign({}, state, {
+            "loading": False,
+            "error": msg
+        })
     return state
