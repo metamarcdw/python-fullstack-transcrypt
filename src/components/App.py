@@ -40,7 +40,7 @@ class App(Component):
                 <div>
                     <TodoList todos={self.state.todos} />
                     <FormPanelContainer />
-                    <ButtonPanelContainer on_click_add={self.on_click_add} />
+                    <ButtonPanelContainer />
                 </div>
             ); """)
 

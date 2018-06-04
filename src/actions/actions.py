@@ -35,7 +35,8 @@ def delete_todo(id_, token):
     }
 
 
-def add_new_todo(new_todo, token):
+def add_new_todo(text, token):
+    new_todo = {"text": text}
     return {
         "type": ADD_NEW_TODO,
         "payload": axios.post("/todo", new_todo, bearer(token))
