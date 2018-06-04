@@ -1,10 +1,10 @@
 from Component_py.stubs import require  # __:skip
 from actions.types import (
-    FETCH_ALL_TODOS, DELETE_TODO, ADD_NEW_TODO,
+    FETCH_ALL_TODOS, COMPLETE_TODO, DELETE_TODO, ADD_NEW_TODO,
     LOGIN_USER, FORM_PANEL_UPDATE, LOGIN_FORM_UPDATE
 )
 axios = require("axios").create({
-    "baseURL": "http://metamarcdw.pythonanywhere.com"
+    "baseURL": "/api"
 })
 
 def bearer(token):
@@ -17,7 +17,14 @@ def bearer(token):
 def fetch_all_todos(token):
     return {
         "type": FETCH_ALL_TODOS,
-        "payload": axios.get("/todo", bearer(token))
+        "payload": axios.js_get("/todo", bearer(token))
+    }
+
+
+def complete_todo(id_, token):
+    return {
+        "type": COMPLETE_TODO,
+        "payload": axios.put(f"/todo/{id_}", None, bearer(token))
     }
 
 
@@ -38,7 +45,7 @@ def add_new_todo(new_todo, token):
 def login_user(username, password):
     return {
         "type": LOGIN_USER,
-        "payload": axios.get("/login", {
+        "payload": axios.js_get("/login", {
             "auth": {
                 "username": username,
                 "password": password

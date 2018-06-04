@@ -4,11 +4,17 @@ Button = require("reactstrap").Button
 
 
 def ButtonPanel(props):
-    return __pragma__("xtrans", None, """ (
+    return __pragma__("xtrans", None, "{}", """ (
         <div className="flex-center">
             <div className='flex-container'>
-                <Button color='success'>Add Todo</Button>
-                <Button color='primary'>Clear Text</Button>
+                <Button
+                    onClick={props.on_click_add}
+                    color='success'
+                >Add Todo</Button>
+                <Button
+                    onClick={props.clear_form_panel}
+                    color='warning'
+                >Clear Text</Button>
             </div>
         </div>
     ); """)

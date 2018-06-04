@@ -30,7 +30,15 @@ module.exports = {
     contentBase: path.join(__dirname, "dist"),
     compress: true,
     host: "localhost",
-    port: 3000
+    port: 3000,
+    proxy: {
+      "/api": {
+        target: 'http://metamarcdw.pythonanywhere.com',
+        pathRewrite: { '^/api': '' },
+        changeOrigin: true,
+        secure: false
+      }
+    }
   },
 
   plugins: [new UglifyJSPlugin()]

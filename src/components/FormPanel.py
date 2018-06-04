@@ -8,7 +8,7 @@ Form, FormGroup, Label, Input = destruct(
 
 def FormPanel(props):
     def on_text_change(e):
-        return lambda: props.form_panel_update(e.target.value)
+        props.form_panel_update(e.target.value)
 
     return __pragma__("xtrans", None, "{}", """ (
         <Form className="padding">
