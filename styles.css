@@ -23,3 +23,7 @@
   flex-grow: 1;
   font-size: 1.3em;
 }
+
+.red-text {
+  color: red;
+}
