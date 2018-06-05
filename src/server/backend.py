@@ -25,7 +25,7 @@ app = Flask(__name__)
 api = Api(app, authorizations=authorizations)
 
 DIR_PATH = \
-    r"C:\Users\cypher\Desktop\fullstack-react\react-native\todos_fs\server"
+    r"C:\Users\admin4\Documents\py\python-fullstack-transcrypt\src\server"
 FULL_PATH = os.path.join(DIR_PATH, "db.sqlite3")
 app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{FULL_PATH}"
 app.config["JWT_SECRET_KEY"] = "asecret"
