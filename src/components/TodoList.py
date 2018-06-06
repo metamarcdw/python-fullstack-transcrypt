@@ -4,6 +4,7 @@ from Component_py.component import Component, destruct
 React = require("react")
 ListGroup, ListGroupItem, Button = destruct(
     require("reactstrap"), "ListGroup", "ListGroupItem", "Button")
+RingLoader = require("react-spinners").RingLoader
 
 class TodoList(Component):
     def componentWillMount(self):
@@ -34,6 +35,17 @@ class TodoList(Component):
                         onClick={self.on_click_delete(todo.id)}
                     >Delete</Button>
                 </ListGroupItem>
+            ); """)
+
+        if self.props.todo_list["loading"]:
+            loading = True
+            return __pragma__("xtrans", None, "{}", """ (
+                <div className="flex-center">
+                    <RingLoader
+                        color={"#999"}
+                        loading={loading}
+                    />
+                </div>
             ); """)
 
         list_items = map(render_list_item, self.props.todo_list["todos"])

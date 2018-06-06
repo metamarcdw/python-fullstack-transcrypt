@@ -35,6 +35,7 @@ def todo_list_reducer(state=initial_state, action=None):
     elif type_ == ADD_NEW_TODO_FULFILLED:
         new_todo = action.payload.data["new_todo"]
         return Object.assign({}, state, {
+            "loading": False,
             "todos": state["todos"].concat(new_todo)
         })
 
