@@ -1,7 +1,7 @@
 from Component_py.stubs import Object  # __:skip
 from actions.types import (
-    FETCH_ALL_TODOS_PENDING, FETCH_ALL_TODOS_FULFILLED,
-    FETCH_ALL_TODOS_REJECTED
+    FETCH_ALL_TODOS_PENDING, FETCH_ALL_TODOS_FULFILLED, FETCH_ALL_TODOS_REJECTED,
+    ADD_NEW_TODO_PENDING, ADD_NEW_TODO_FULFILLED, ADD_NEW_TODO_REJECTED
 )
 
 
@@ -14,7 +14,7 @@ initial_state = {
 
 def todo_list_reducer(state=initial_state, action=None):
     type_ = action["type"]
-    if type_ == FETCH_ALL_TODOS_PENDING:
+    if type_ in (FETCH_ALL_TODOS_PENDING, ADD_NEW_TODO_PENDING):
         return Object.assign({}, state, {
             "loading": True
         })
@@ -23,7 +23,7 @@ def todo_list_reducer(state=initial_state, action=None):
             "loading": False,
             "todos": action.payload.data["todos"]
         })
-    elif type_ == FETCH_ALL_TODOS_REJECTED:
+    elif type_ in (FETCH_ALL_TODOS_REJECTED, ADD_NEW_TODO_REJECTED):
         msg = action.payload.response.data["message"]
         if not msg:
             msg = "Unknown Error."
@@ -31,4 +31,11 @@ def todo_list_reducer(state=initial_state, action=None):
             "loading": False,
             "error": msg
         })
+
+    elif type_ == ADD_NEW_TODO_FULFILLED:
+        new_todo = action.payload.data["new_todo"]
+        return Object.assign({}, state, {
+            "todos": state["todos"].concat(new_todo)
+        })
+
     return state

@@ -6,10 +6,18 @@ connect = require("react-redux").connect
 
 def mapStateToProps(state):
     return {
-        "todos": state["todo_list"]
+        "todo_list": state["todo_list"],
+        "login_user": state["login_user"]
+    }
+
+
+def mapDispatchToProps(dispatch):
+    return {
+        "fetch_all_todos": lambda t: dispatch(fetch_all_todos(t))
     }
 
 
 TodoListContainer = connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(TodoList)

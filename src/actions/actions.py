@@ -3,9 +3,7 @@ from actions.types import (
     FETCH_ALL_TODOS, COMPLETE_TODO, DELETE_TODO, ADD_NEW_TODO,
     LOGIN_USER, FORM_PANEL_UPDATE, LOGIN_FORM_UPDATE
 )
-axios = require("axios").create({
-    "baseURL": "/api"
-})
+axios = require("axios").create({"baseURL": "/api"})
 
 def bearer(token):
     return {

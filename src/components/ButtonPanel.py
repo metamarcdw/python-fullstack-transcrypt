@@ -1,4 +1,4 @@
-from Component_py.stubs import require, __pragma__, console  # __:skip
+from Component_py.stubs import require, __pragma__  # __:skip
 React = require("react")
 Button = require("reactstrap").Button
 
@@ -7,9 +7,9 @@ def ButtonPanel(props):
     def on_click_add():
         todo_text = props.form_panel["text"]
         token = props.login_user["token"]
-        if todo_text and token:
-            console.log(f"TEXT: {todo_text}\nTOKEN: {token}")
+        if todo_text:
             props.add_new_todo(todo_text, token)
+            props.clear_form_panel()
 
     return __pragma__("xtrans", None, "{}", """ (
         <div className="flex-center">

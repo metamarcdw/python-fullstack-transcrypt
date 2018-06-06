@@ -3,7 +3,7 @@ from Component_py.component import Component, destruct
 from containers.LoginFormContainer import LoginFormContainer
 from containers.FormPanelContainer import FormPanelContainer
 from containers.ButtonPanelContainer import ButtonPanelContainer
-from components.TodoList import TodoList
+from containers.TodoListContainer import TodoListContainer
 
 React = require("react")
 Row, Col, Jumbotron = destruct(
@@ -11,34 +11,19 @@ Row, Col, Jumbotron = destruct(
 
 
 class App(Component):
-    def __init__(self, props):
-        super().__init__(props)
-        self.state = {
-            "todos": [
-                {
-                    "id": 1,
-                    "text": "Balls"
-                },
-                {
-                    "id": 2,
-                    "text": "Royce"
-                }
-            ]
-        }
-
     def render(self):
         def render_login_panel():
             return __pragma__("xtrans", None, "{}", """ (
                 <div>
                     <h5>Please Login:</h5>
-                    <LoginFormContainer on_click={self.on_click_login} />
+                    <LoginFormContainer />
                 </div>
             ); """)
 
         def render_todo_panel():
             return __pragma__("xtrans", None, "{}", """ (
                 <div>
-                    <TodoList todos={self.state.todos} />
+                    <TodoListContainer />
                     <FormPanelContainer />
                     <ButtonPanelContainer />
                 </div>

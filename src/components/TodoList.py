@@ -6,6 +6,9 @@ ListGroup, ListGroupItem, Button = destruct(
     require("reactstrap"), "ListGroup", "ListGroupItem", "Button")
 
 class TodoList(Component):
+    def componentWillMount(self):
+        self.props.fetch_all_todos(self.props.login_user["token"])
+
     def on_click_complete(self, todo_id):
         return lambda: console.log(todo_id)
 
@@ -33,7 +36,7 @@ class TodoList(Component):
                 </ListGroupItem>
             ); """)
 
-        list_items = map(render_list_item, self.props["todos"])
+        list_items = map(render_list_item, self.props.todo_list["todos"])
         return __pragma__("xtrans", None, "{}", """ (
             <ListGroup>
                 {list_items}
