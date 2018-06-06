@@ -11,6 +11,11 @@ def ButtonPanel(props):
             props.add_new_todo(todo_text, token)
             props.clear_form_panel()
 
+    def on_click_clear():
+        todo_text = props.form_panel["text"]
+        if todo_text:
+            props.form_panel_update("")
+
     return __pragma__("xtrans", None, "{}", """ (
         <div className="flex-center">
             <div className="flex-container">
@@ -19,7 +24,7 @@ def ButtonPanel(props):
                     color="success"
                 >Add Todo</Button>
                 <Button
-                    onClick={props.clear_form_panel}
+                    onClick={on_click_clear}
                     color="warning"
                 >Clear Text</Button>
             </div>

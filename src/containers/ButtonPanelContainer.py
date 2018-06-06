@@ -14,7 +14,7 @@ def mapStateToProps(state):
 def mapDispatchToProps(dispatch):
     return {
         "add_new_todo": lambda tx, to: dispatch(add_new_todo(tx, to)),
-        "clear_form_panel": lambda: dispatch(form_panel_update(""))
+        "form_panel_update": lambda t: dispatch(form_panel_update(t))
     }
 
 
