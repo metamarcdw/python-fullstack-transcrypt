@@ -5,6 +5,7 @@ React = require("react")
 Form, FormGroup, Label, Input, Button = destruct(
     require("reactstrap"), "Form", "FormGroup", "Label", "Input", "Button")
 
+
 def LoginForm(props):
     def on_username_change(e):
         props.login_form_update(e.target.value, None)

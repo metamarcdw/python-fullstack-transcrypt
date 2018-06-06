@@ -1,4 +1,4 @@
-from Component_py.stubs import Object, console  # __:skip
+from Component_py.stubs import Object  # __:skip
 from actions.types import FORM_PANEL_UPDATE
 
 

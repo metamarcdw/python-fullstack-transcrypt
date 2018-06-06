@@ -3,8 +3,8 @@ from containers.AppContainer import AppContainer
 from store import store
 
 React = require("react")
-Provider = require("react-redux").Provider
 ReactDOM = require("react-dom")
+Provider = require("react-redux").Provider
 
 app = __pragma__("xtrans", None, "{}", """ (
     <Provider store={store}>

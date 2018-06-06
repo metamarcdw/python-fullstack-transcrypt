@@ -5,12 +5,14 @@ from actions.types import (
 )
 axios = require("axios").create({"baseURL": "/api"})
 
+
 def bearer(token):
     return {
         "headers": {
             "Authorization": f"Bearer {token}"
         }
     }
+
 
 def fetch_all_todos(token):
     return {

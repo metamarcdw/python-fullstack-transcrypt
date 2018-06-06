@@ -6,6 +6,7 @@ ListGroup, ListGroupItem, Button = destruct(
     require("reactstrap"), "ListGroup", "ListGroupItem", "Button")
 RingLoader = require("react-spinners").RingLoader
 
+
 class TodoList(Component):
     def componentWillMount(self):
         self.props.fetch_all_todos(self.props.login_user["token"])

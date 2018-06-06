@@ -30,7 +30,8 @@ class App(Component):
             ); """)
 
         login = self.props["login_user"]
-        visible_component = render_todo_panel() if login["logged_in"] else render_login_panel()
+        visible_component = render_todo_panel() if login["logged_in"] \
+            else render_login_panel()
 
         return __pragma__("xtrans", None, "{}", """ (
             <Row>
