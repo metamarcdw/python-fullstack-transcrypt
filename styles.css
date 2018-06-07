@@ -2,6 +2,11 @@
   padding: 25px;
 }
 
+.margin {
+  margin-left: 5px;
+  margin-right: 25px;
+}
+
 .flex-column {
   display: flex;
   flex-direction: column;
@@ -26,4 +31,8 @@
 
 .red-text {
   color: red;
+}
+
+.green-text {
+  color: green;
 }
