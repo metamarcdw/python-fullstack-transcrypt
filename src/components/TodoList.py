@@ -38,7 +38,8 @@ class TodoList(Component):
                 </ListGroupItem>
             ); """)
 
-        if self.props.todo_list["loading"]:
+        todo_list = self.props["todo_list"]
+        if todo_list["loading"]:
             loading = True
             return __pragma__("xtrans", None, "{}", """ (
                 <div className="flex-center">
@@ -49,9 +50,12 @@ class TodoList(Component):
                 </div>
             ); """)
 
-        list_items = map(render_list_item, self.props.todo_list["todos"])
+        list_items = map(render_list_item, todo_list["todos"])
         return __pragma__("xtrans", None, "{}", """ (
-            <ListGroup>
-                {list_items}
-            </ListGroup>
+            <div>
+                <ListGroup>
+                    {list_items}
+                </ListGroup>
+                <span className="red-text">{todo_list.error}</span>
+            </div>
         ); """)
