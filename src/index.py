@@ -10,5 +10,5 @@ app = __pragma__("xtrans", None, "{}", """ (
     <Provider store={store}>
         <AppContainer />
     </Provider>
-) """)
+); """)
 ReactDOM.render(app, document.getElementById("root"))

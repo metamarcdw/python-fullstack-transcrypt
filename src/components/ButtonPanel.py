@@ -9,7 +9,7 @@ def ButtonPanel(props):
         token = props.login_user["token"]
         if todo_text:
             props.add_new_todo(todo_text, token)
-            props.clear_form_panel()
+            props.form_panel_update("")
 
     def on_click_clear():
         todo_text = props.form_panel["text"]

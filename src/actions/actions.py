@@ -1,4 +1,4 @@
-from Component_py.stubs import require  # __:skip
+from Component_py.stubs import require, console  # __:skip
 from actions.types import (
     FETCH_ALL_TODOS, COMPLETE_TODO, DELETE_TODO, ADD_NEW_TODO,
     LOGIN_USER, FORM_PANEL_UPDATE, LOGIN_FORM_UPDATE
@@ -31,7 +31,7 @@ def complete_todo(id_, token):
 def delete_todo(id_, token):
     return {
         "type": DELETE_TODO,
-        "payload": axios.delete(f"/todo/{id_}", None, bearer(token))
+        "payload": axios.delete(f"/todo/{id_}", bearer(token))
     }
 
 

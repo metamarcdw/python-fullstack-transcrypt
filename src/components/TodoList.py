@@ -1,4 +1,4 @@
-from Component_py.stubs import require, __pragma__, console  # __:skip
+from Component_py.stubs import require, __pragma__  # __:skip
 from Component_py.component import Component, destruct
 
 React = require("react")
@@ -9,14 +9,22 @@ FontAwesomeIcon = require("react-fontawesome")
 
 
 class TodoList(Component):
-    def componentWillMount(self):
-        self.props.fetch_all_todos(self.props.login_user["token"])
+    def componentDidMount(self):
+        token = self.props.login_user["token"]
+        self.props.fetch_all_todos(token)
 
-    def on_click_complete(self, todo_id):
-        return lambda: console.log(todo_id)
+    def on_click_complete(self, todo):
+        token = self.props.login_user["token"]
+        def closure():
+            if not todo["complete"]:
+                self.props.complete_todo(todo["id"], token)
+        return closure
 
-    def on_click_delete(self, todo_id):
-        return lambda: console.log(todo_id)
+    def on_click_delete(self, todo):
+        token = self.props.login_user["token"]
+        def closure():
+            self.props.delete_todo(todo["id"], token)
+        return closure
 
     def render_spinner(self):
         loading = True
@@ -39,6 +47,7 @@ class TodoList(Component):
                         className="green-text" />
                 </div>
             ); """)
+        return None
 
     def render_list_item(self, todo):
         return __pragma__("xtrans", None, "{}", """ (
@@ -52,11 +61,11 @@ class TodoList(Component):
                 </div>
                 <Button
                     color="primary"
-                    onClick={self.on_click_complete(todo.id)}
+                    onClick={self.on_click_complete(todo)}
                 >Complete</Button>
                 <Button
                     color="danger"
-                    onClick={self.on_click_delete(todo.id)}
+                    onClick={self.on_click_delete(todo)}
                 >Delete</Button>
             </ListGroupItem>
         ); """)
