@@ -23,8 +23,8 @@ def todo_list_reducer(state=initial_state, action=None):
             "loading": True
         })
 
-    elif type_ in (FETCH_ALL_TODOS_REJECTED, ADD_NEW_TODO_REJECTED,
-                   COMPLETE_TODO_REJECTED, DELETE_TODO_REJECTED):
+    elif type_ in (ADD_NEW_TODO_REJECTED, COMPLETE_TODO_REJECTED,
+                   DELETE_TODO_REJECTED):
         msg = action.payload.response.data["message"]
         if not msg:
             msg = "Unknown Error."
@@ -32,6 +32,20 @@ def todo_list_reducer(state=initial_state, action=None):
             "loading": False,
             "error": msg
         })
+
+    elif type_ == FETCH_ALL_TODOS_REJECTED:
+        mutation = {
+            "loading": False,
+            "todos": []
+        }
+        msg = action.payload.response.data["message"]
+
+        if not msg:
+            msg = "Unknown Error."
+
+        if "No todos found." not in msg:
+            mutation["error"] = msg
+        return Object.assign({}, state, mutation)
 
     elif type_ == FETCH_ALL_TODOS_FULFILLED:
         return Object.assign({}, state, {
@@ -43,12 +57,12 @@ def todo_list_reducer(state=initial_state, action=None):
         new_todo = action.payload.data["new_todo"]
         return Object.assign({}, state, {
             "loading": False,
-            "todos": state["todos"].concat(new_todo)
+            "todos": state["todos"].concat(new_todo),
+            "error": None
         })
 
     elif type_ == COMPLETE_TODO_FULFILLED:
         completed_todo = action.payload.data["completed_todo"]
-
         def complete(todo):
             if todo["id"] == completed_todo["id"]:
                 todo["complete"] = True
@@ -61,7 +75,6 @@ def todo_list_reducer(state=initial_state, action=None):
 
     elif type_ == DELETE_TODO_FULFILLED:
         deleted_todo = action.payload.data["deleted_todo"]
-
         return Object.assign({}, state, {
             "loading": False,
             "todos": filter(lambda t: t["id"] != deleted_todo["id"], state["todos"])

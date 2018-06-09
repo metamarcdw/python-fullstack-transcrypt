@@ -60,6 +60,7 @@ class TodoList(Component):
                     {todo.text}
                 </div>
                 <Button
+                    className="margin"
                     color="primary"
                     onClick={self.on_click_complete(todo)}
                 >Complete</Button>

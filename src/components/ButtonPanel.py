@@ -16,6 +16,9 @@ def ButtonPanel(props):
         if todo_text:
             props.form_panel_update("")
 
+    def on_click_logout():
+        props.logout_user()
+
     return __pragma__("xtrans", None, "{}", """ (
         <div className="flex-center">
             <div className="flex-container">
@@ -27,6 +30,9 @@ def ButtonPanel(props):
                     onClick={on_click_clear}
                     color="warning"
                 >Clear Text</Button>
+                <Button
+                    onClick={on_click_logout}
+                >Logout</Button>
             </div>
         </div>
     ); """)
