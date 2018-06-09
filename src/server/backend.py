@@ -276,6 +276,7 @@ class TodoResource(Resource):
         return todo
 
     @jwt_required
+    @api.marshal_with(todo_shape, envelope="deleted_todo")
     @api.doc(responses={
         200: "Success",
         401: "Not authenticated",
@@ -290,7 +291,7 @@ class TodoResource(Resource):
             api.abort(404, "Todo not found")
         db.session.delete(todo)
         db.session.commit()
-        return {"message": "Todo deleted successfully."}
+        return todo
 
 
 if __name__ == "__main__":
