@@ -49,14 +49,14 @@ def register_user(username, password):
         "name": username,
         "password": password
     }
-    def closure(dispatch):
+    def thunk(dispatch):
         axios.post("/user", new_user)\
             .then(lambda json: dispatch(login_user(username, password)))\
             .catch(lambda err: dispatch({
                 "type": REGISTER_USER_REJECTED,
                 "payload": err
             }))
-    return closure
+    return thunk
 
 
 def login_user(username, password):
