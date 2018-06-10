@@ -21,8 +21,8 @@ store = createStore(
         "form_panel": form_panel_reducer
     }),
     applyMiddleware(
-        logger(),
+        thunk,
         promise(),
-        thunk
+        logger()
     )
 )
