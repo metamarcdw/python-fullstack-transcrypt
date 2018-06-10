@@ -1,7 +1,7 @@
 from Component_py.stubs import require, console  # __:skip
 from actions.types import (
     FETCH_ALL_TODOS, COMPLETE_TODO, DELETE_TODO, ADD_NEW_TODO,
-    REGISTER_USER, LOGIN_USER, LOGOUT_USER,
+    REGISTER_USER, REGISTER_USER_REJECTED, LOGIN_USER, LOGOUT_USER,
     FORM_PANEL_UPDATE, LOGIN_FORM_UPDATE
 )
 axios = require("axios").create({"baseURL": "/api"})
@@ -49,10 +49,14 @@ def register_user(username, password):
         "name": username,
         "password": password
     }
-    return {
-        "type": REGISTER_USER,
-        "payload": axios.post("/user", new_user)
-    }
+    def closure(dispatch):
+        axios.post("/user", new_user)\
+            .then(lambda json: dispatch(login_user(username, password)))\
+            .catch(lambda err: dispatch({
+                "type": REGISTER_USER_REJECTED,
+                "payload": err
+            }))
+    return closure
 
 
 def login_user(username, password):

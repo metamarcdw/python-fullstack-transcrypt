@@ -11,6 +11,7 @@ createStore, combineReducers, applyMiddleware = destruct(
 
 logger = require("redux-logger").createLogger
 promise = require("redux-promise-middleware").js_default
+thunk = require("redux-thunk").js_default
 
 store = createStore(
     combineReducers({
@@ -21,6 +22,7 @@ store = createStore(
     }),
     applyMiddleware(
         logger(),
-        promise()
+        promise(),
+        thunk
     )
 )
