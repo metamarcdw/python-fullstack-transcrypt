@@ -3,6 +3,7 @@ import datetime
 import uuid
 from flask import Flask, request
 from flask_restplus import Api, Resource, fields
+from flask_cors import CORS
 from flask_jwt_extended import(
     JWTManager, create_access_token, get_jwt_identity, jwt_required
 )
@@ -23,6 +24,15 @@ authorizations = {
 
 app = Flask(__name__)
 api = Api(app, authorizations=authorizations)
+cors = CORS(app, resources={
+    r"/*": {
+        "origins": [
+            "http://metamarcdw.github.io",
+            "http://localhost:3000"
+        ],
+        "supports_credentials": True
+    }
+})
 
 DIR_PATH = \
     r"C:\Users\admin4\Documents\py\python-fullstack-transcrypt\src\server"
