@@ -4,7 +4,7 @@ from actions.types import (
     REGISTER_USER, REGISTER_USER_REJECTED, LOGIN_USER, LOGOUT_USER,
     FORM_PANEL_UPDATE, LOGIN_FORM_UPDATE
 )
-axios = require("axios").create({"baseURL": "http://metamarcdw.pythonanywhere.com"})
+axios = require("axios").create({"baseURL": "https://metamarcdw.pythonanywhere.com"})
 
 
 def bearer(token):
