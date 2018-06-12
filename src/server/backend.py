@@ -27,7 +27,7 @@ api = Api(app, authorizations=authorizations)
 cors = CORS(app, resources={
     r"/*": {
         "origins": [
-            "https://metamarcdw.github.io",
+            "https://metamarcdw.github.io/python-fullstack-transcrypt",
             "http://localhost:3000"
         ],
         "supports_credentials": True
