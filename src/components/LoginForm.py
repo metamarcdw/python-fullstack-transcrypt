@@ -14,7 +14,7 @@ def LoginForm(props):
         username, password = destruct(
             props["login_form"], "username_text", "password_text")
         if username and password:
-            props.login_form_update("", "")
+            props.clear_login_form()
             props.do_login(username, password)
         e.preventDefault()
 
@@ -22,7 +22,7 @@ def LoginForm(props):
         username, password = destruct(
             props["login_form"], "username_text", "password_text")
         if username and password:
-            props.login_form_update("", "")
+            props.clear_login_form()
             props.register_user(username, password)
         e.preventDefault()
 

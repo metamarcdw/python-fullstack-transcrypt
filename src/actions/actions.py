@@ -2,7 +2,7 @@ from Component_py.stubs import require, console  # __:skip
 from actions.types import (
     FETCH_ALL_TODOS, COMPLETE_TODO, DELETE_TODO, ADD_NEW_TODO,
     REGISTER_USER, REGISTER_USER_REJECTED, LOGIN_USER, LOGOUT_USER,
-    FORM_PANEL_UPDATE, LOGIN_FORM_UPDATE
+    FORM_PANEL_UPDATE, LOGIN_FORM_UPDATE, CLEAR_LOGIN_FORM
 )
 axios = require("axios").create({"baseURL": "https://metamarcdw.pythonanywhere.com"})
 
@@ -92,4 +92,10 @@ def login_form_update(field_name, field_text):
         "payload": {
             field_name: field_text
         }
+    }
+
+
+def clear_login_form():
+    return {
+        "type": CLEAR_LOGIN_FORM
     }
