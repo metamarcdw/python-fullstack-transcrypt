@@ -15,7 +15,7 @@ def LoginForm(props):
             props["login_form"], "username_text", "password_text")
         if username and password:
             props.do_login(username, password)
-        props.login_form_update("", "")
+            props.login_form_update("", "")
         e.preventDefault()
 
     def on_click_register(e):
@@ -23,8 +23,7 @@ def LoginForm(props):
             props["login_form"], "username_text", "password_text")
         if username and password:
             props.register_user(username, password)
-            props.do_login(username, password)
-        props.login_form_update("", "")
+            props.login_form_update("", "")
         e.preventDefault()
 
     return __pragma__("xtrans", None, "{}", """ (
