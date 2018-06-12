@@ -86,11 +86,10 @@ def form_panel_update(todo_text):
     }
 
 
-def login_form_update(username_text, password_text):
+def login_form_update(field_name, field_text):
     return {
         "type": LOGIN_FORM_UPDATE,
         "payload": {
-            "username_text": username_text,
-            "password_text": password_text
+            field_name: field_text
         }
     }
