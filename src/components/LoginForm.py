@@ -10,7 +10,7 @@ def LoginForm(props):
     def on_input_change(e):
         props.login_form_update(e.target.id, e.target.value)
 
-    def on_click_login(e):
+    def on_submit_login(e):
         username, password = destruct(
             props["login_form"], "username_text", "password_text")
         if username and password:
@@ -24,10 +24,9 @@ def LoginForm(props):
         if username and password:
             props.clear_login_form()
             props.register_user(username, password)
-        e.preventDefault()
 
     return __pragma__("xtrans", None, "{}", """ (
-        <Form className="padding">
+        <Form className="padding" onSubmit={on_submit_login}>
             <FormGroup>
                 <Label for="username_text">Enter your username</Label>
                 <Input
@@ -48,7 +47,7 @@ def LoginForm(props):
             </FormGroup>
             <Button
                 className="margin"
-                onClick={on_click_login}
+                type="submit"
             >Login</Button>
             <Button
                 onClick={on_click_register}
