@@ -15,6 +15,7 @@ class TodoList(Component):
 
     def on_click_complete(self, todo):
         token = self.props.login_user["token"]
+
         def closure():
             if not todo["complete"]:
                 self.props.complete_todo(todo["id"], token)
@@ -22,9 +23,7 @@ class TodoList(Component):
 
     def on_click_delete(self, todo):
         token = self.props.login_user["token"]
-        def closure():
-            self.props.delete_todo(todo["id"], token)
-        return closure
+        return lambda: self.props.delete_todo(todo["id"], token)
 
     def render_spinner(self):
         loading = True
@@ -32,8 +31,7 @@ class TodoList(Component):
             <div className="flex-center">
                 <RingLoader
                     color="#999"
-                    loading={loading}
-                />
+                    loading={loading} />
             </div>
         ); """)
 

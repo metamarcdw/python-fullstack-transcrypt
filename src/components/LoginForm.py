@@ -33,8 +33,7 @@ def LoginForm(props):
                     onChange={on_input_change}
                     value={props.login_form.username_text}
                     placeholder="Your Username"
-                    id="username_text"
-                />
+                    id="username_text" />
             </FormGroup>
             <FormGroup>
                 <Label for="password_text">Enter your password</Label>
@@ -42,8 +41,7 @@ def LoginForm(props):
                     onChange={on_input_change}
                     value={props.login_form.password_text}
                     type="password"
-                    id="password_text"
-                />
+                    id="password_text" />
             </FormGroup>
             <Button
                 className="margin"

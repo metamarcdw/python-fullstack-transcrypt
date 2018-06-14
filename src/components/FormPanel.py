@@ -18,8 +18,7 @@ def FormPanel(props):
                     onChange={on_text_change}
                     value={props.data.text}
                     id="text_input"
-                    placeholder="What to do?"
-                />
+                    placeholder="What to do?" />
             </FormGroup>
         </Form>
     ); """)
