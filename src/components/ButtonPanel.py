@@ -17,6 +17,7 @@ def ButtonPanel(props):
             props.form_panel_update("")
 
     def on_click_logout():
+        on_click_clear()
         props.logout_user()
 
     return __pragma__("xtrans", None, "{}", """ (
