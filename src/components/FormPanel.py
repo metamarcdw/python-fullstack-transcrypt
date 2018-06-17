@@ -16,7 +16,7 @@ def FormPanel(props):
                 <Label for="text_input">Enter new todo text:</Label>
                 <Input
                     onChange={on_text_change}
-                    value={props.data.text}
+                    value={props.form_panel.text}
                     id="text_input"
                     placeholder="What to do?" />
             </FormGroup>

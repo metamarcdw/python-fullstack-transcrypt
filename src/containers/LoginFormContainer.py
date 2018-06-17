@@ -16,7 +16,7 @@ def mapDispatchToProps(dispatch):
     return {
         "login_form_update": lambda u, p: dispatch(login_form_update(u, p)),
         "clear_login_form": lambda: dispatch(clear_login_form()),
-        "do_login": lambda u, p: dispatch(login_user(u, p)),
+        "login_user": lambda u, p: dispatch(login_user(u, p)),
         "register_user": lambda u, p: dispatch(register_user(u, p))
     }
 

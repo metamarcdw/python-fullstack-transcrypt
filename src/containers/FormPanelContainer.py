@@ -5,7 +5,7 @@ connect = require("react-redux").connect
 
 
 def mapStateToProps(state):
-    return {"data": state["form_panel"]}
+    return {"form_panel": state["form_panel"]}
 
 
 def mapDispatchToProps(dispatch):

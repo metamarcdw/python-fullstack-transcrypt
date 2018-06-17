@@ -15,7 +15,7 @@ def LoginForm(props):
             props["login_form"], "username_text", "password_text")
         if username and password:
             props.clear_login_form()
-            props.do_login(username, password)
+            props.login_user(username, password)
         e.preventDefault()
 
     def on_click_register(e):
