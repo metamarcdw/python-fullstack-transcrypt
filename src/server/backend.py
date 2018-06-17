@@ -64,7 +64,7 @@ class Todo(db.Model):
                         nullable=False)
 
 
-class BaseUser:
+class UserUtil:
     user_shape = api.model("user_shape", {
         "id": fields.String(
             description="This user's public ID",
@@ -91,7 +91,8 @@ class BaseUser:
             min_length=1, required=True)
     })
 
-    def _abort_if_not_admin(self, current_user=None):
+    @staticmethod
+    def abort_if_not_admin(current_user=None):
         if not current_user:
             current_user = get_jwt_identity()
         if not current_user["admin"]:
@@ -99,44 +100,26 @@ class BaseUser:
 
 
 @api.route("/user")
-class AllUsersResource(BaseUser, Resource):
+class UsersResource(Resource):
     @jwt_required
-    @api.marshal_with(BaseUser.user_shape, envelope="users")
+    @api.marshal_with(UserUtil.user_shape, envelope="users")
     @api.doc(responses={
         401: "Not authenticated",
         403: "Not admin",
         404: "Not found"
     })
     def get(self):
-        self._abort_if_not_admin()
+        UserUtil.abort_if_not_admin()
         # Get all users
         users = User.query.all()
         return users
 
-
-@api.route("/user/<string:public_id>")
-class UserResource(BaseUser, Resource):
-    @jwt_required
-    @api.marshal_with(BaseUser.user_shape, envelope="users")
-    @api.doc(responses={
-        401: "Not authenticated",
-        403: "Not admin",
-        404: "Not found"
-    })
-    def get(self, public_id=None):
-        self._abort_if_not_admin()
-        # Get one user
-        user = User.query.filter_by(public_id=public_id).first()
-        if not user:
-            api.abort(404, "User not found")
-        return user
-
-    @api.expect(BaseUser.new_user_shape, validate=True)
-    @api.marshal_with(BaseUser.user_shape, envelope="new_user")
+    @api.expect(UserUtil.new_user_shape, validate=True)
+    @api.marshal_with(UserUtil.user_shape, envelope="new_user")
     @api.doc(responses={
         400: "Malformed request OR User exists"
     })
-    def post(self, public_id=None):
+    def post(self):
         # Create one user
         name, password = api.payload["name"], api.payload["password"]
         try:
@@ -151,17 +134,35 @@ class UserResource(BaseUser, Resource):
             api.abort(400, "A user with this name already exists")
         return new_user
 
+
+@api.route("/user/<string:public_id>")
+class UserResource(Resource):
     @jwt_required
-    @api.marshal_with(BaseUser.user_shape, envelope="promoted_user")
+    @api.marshal_with(UserUtil.user_shape, envelope="users")
+    @api.doc(responses={
+        401: "Not authenticated",
+        403: "Not admin",
+        404: "Not found"
+    })
+    def get(self, public_id):
+        UserUtil.abort_if_not_admin()
+        # Get one user
+        user = User.query.filter_by(public_id=public_id).first()
+        if not user:
+            api.abort(404, "User not found")
+        return user
+
+    @jwt_required
+    @api.marshal_with(UserUtil.user_shape, envelope="promoted_user")
     @api.doc(responses={
         400: "Already admin",
         401: "Not authenticated",
         403: "Not admin",
         404: "Not found"
     })
-    def put(self, public_id=None):
+    def put(self, public_id):
         # Promote one user
-        self._abort_if_not_admin()
+        UserUtil.abort_if_not_admin()
         user = User.query.filter_by(public_id=public_id).first()
         if not user:
             api.abort(404, "User not found")
@@ -172,6 +173,7 @@ class UserResource(BaseUser, Resource):
         return user
 
     @jwt_required
+    @api.marshal_with(UserUtil.user_shape, envelope="deleted_user")
     @api.doc(responses={
         200: "Success",
         400: "Cannot delete self",
@@ -179,10 +181,10 @@ class UserResource(BaseUser, Resource):
         403: "Not admin",
         404: "Not found"
     })
-    def delete(self, public_id=None):
+    def delete(self, public_id):
         # Delete one user
         current_user = get_jwt_identity()
-        self._abort_if_not_admin(current_user=current_user)
+        UserUtil.abort_if_not_admin(current_user=current_user)
         user = User.query.filter_by(public_id=public_id).first()
         if not user:
             api.abort(404, "User not found")
@@ -190,7 +192,7 @@ class UserResource(BaseUser, Resource):
             api.abort(400, "Cannot delete your own user")
         db.session.delete(user)
         db.session.commit()
-        return {"message": "User deleted successfully."}
+        return user
 
 
 @api.route("/login")
@@ -220,7 +222,7 @@ class LoginResource(Resource):
         return {"token": create_access_token(identity, expires_delta=expiry)}
 
 
-class BaseTodo:
+class TodoUtil:
     todo_shape = api.model("todo_shape", {
         "id": fields.Integer(
             description="A unique identifier for todos",
@@ -242,14 +244,14 @@ class BaseTodo:
 
 
 @api.route("/todo")
-class AllTodosResource(Resource):
+class TodosResource(Resource):
     @jwt_required
-    @api.marshal_with(BaseTodo.todo_shape, envelope="todos")
+    @api.marshal_with(TodoUtil.todo_shape, envelope="todos")
     @api.doc(responses={
         401: "Not authenticated",
         404: "Not found"
     })
-    def get(self, id=None):
+    def get(self):
         current_user = get_jwt_identity()
         user = User.query.filter_by(name=current_user["name"]).first()
         # Get all todos for this user
@@ -257,32 +259,14 @@ class AllTodosResource(Resource):
             api.abort(404, "No todos found")
         return user.todos
 
-
-@api.route("/todo/<int:id>")
-class TodoResource(Resource):
     @jwt_required
-    @api.marshal_with(BaseTodo.todo_shape, envelope="todos")
-    @api.doc(responses={
-        401: "Not authenticated",
-        404: "Not found"
-    })
-    def get(self, id=None):
-        current_user = get_jwt_identity()
-        user = User.query.filter_by(name=current_user["name"]).first()
-        # Get one todo
-        todo = Todo.query.filter_by(id=id, user=user).first()
-        if not todo:
-            api.abort(404, "Todo not found")
-        return todo
-
-    @jwt_required
-    @api.expect(BaseTodo.new_todo_shape, validate=True)
-    @api.marshal_with(BaseTodo.todo_shape, envelope="new_todo")
+    @api.expect(TodoUtil.new_todo_shape, validate=True)
+    @api.marshal_with(TodoUtil.todo_shape, envelope="new_todo")
     @api.doc(responses={
         400: "Malformed request",
         401: "Not authenticated"
     })
-    def post(self, id=None):
+    def post(self):
         # Create a new todo
         current_user = get_jwt_identity()
         user = User.query.filter_by(name=current_user["name"]).first()
@@ -294,13 +278,31 @@ class TodoResource(Resource):
         db.session.commit()
         return new_todo
 
+
+@api.route("/todo/<int:id>")
+class TodoResource(Resource):
     @jwt_required
-    @api.marshal_with(BaseTodo.todo_shape, envelope="completed_todo")
+    @api.marshal_with(TodoUtil.todo_shape, envelope="todos")
     @api.doc(responses={
         401: "Not authenticated",
         404: "Not found"
     })
-    def put(self, id=None):
+    def get(self, id):
+        current_user = get_jwt_identity()
+        user = User.query.filter_by(name=current_user["name"]).first()
+        # Get one todo
+        todo = Todo.query.filter_by(id=id, user=user).first()
+        if not todo:
+            api.abort(404, "Todo not found")
+        return todo
+
+    @jwt_required
+    @api.marshal_with(TodoUtil.todo_shape, envelope="completed_todo")
+    @api.doc(responses={
+        401: "Not authenticated",
+        404: "Not found"
+    })
+    def put(self, id):
         # Complete a todo
         current_user = get_jwt_identity()
         user = User.query.filter_by(name=current_user["name"]).first()
@@ -312,13 +314,13 @@ class TodoResource(Resource):
         return todo
 
     @jwt_required
-    @api.marshal_with(BaseTodo.todo_shape, envelope="deleted_todo")
+    @api.marshal_with(TodoUtil.todo_shape, envelope="deleted_todo")
     @api.doc(responses={
         200: "Success",
         401: "Not authenticated",
         404: "Not found"
     })
-    def delete(self, id=None):
+    def delete(self, id):
         # Delete a todo
         current_user = get_jwt_identity()
         user = User.query.filter_by(name=current_user["name"]).first()
