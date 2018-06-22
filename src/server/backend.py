@@ -22,9 +22,7 @@ authorizations = {
     }
 }
 
-app = Flask(__name__)
-api = Api(app, authorizations=authorizations)
-cors = CORS(app, resources={
+cors_resources = {
     r"/*": {
         "origins": [
             "https://metamarcdw.github.io",
@@ -32,18 +30,27 @@ cors = CORS(app, resources={
         ],
         "supports_credentials": True
     }
-})
+}
 
-DIR_PATH = \
-    r"C:\Users\cypher\Desktop\fullstack-react\todos_fs\src\server"
-FULL_PATH = os.path.join(DIR_PATH, "db.sqlite3")
-app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{FULL_PATH}"
-app.config["JWT_SECRET_KEY"] = "asecret"
+api = Api(authorizations=authorizations)
+cors = CORS(resources=cors_resources)
 
-db = SQLAlchemy(app)
-jwt = JWTManager(app)
+db = SQLAlchemy()
+jwt = JWTManager()
 jwt._set_error_handler_callbacks(api)
 # https://github.com/vimalloc/flask-jwt-extended/issues/83
+
+
+def create_app(config_obj):
+    app = Flask(__name__)
+    app.config.from_object(config_obj)
+
+    api.init_app(app)
+    cors.init_app(app)
+    db.init_app(app)
+    jwt.init_app(app)
+
+    return app
 
 
 class User(db.Model):
@@ -333,4 +340,5 @@ class TodoResource(Resource):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    flask_app = create_app("config.DevelopmentConfig")
+    flask_app.run()
