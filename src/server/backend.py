@@ -340,5 +340,18 @@ class TodoResource(Resource):
 
 
 if __name__ == "__main__":
-    flask_app = create_app("config.DevelopmentConfig")
+    mode = os.environ.get("TODOS_FS_MODE")
+    config_type = None
+
+    if mode == "production":
+        config_type = "config.ProductionConfig"
+    elif mode == "development":
+        config_type = "config.DevelopmentConfig"
+    elif mode == "testing":
+        config_type = "config.TestingConfig"
+    else:
+        raise ValueError("Mode variable not set.")
+
+    print(f" * Running the API in {mode} mode.")
+    flask_app = create_app(config_type)
     flask_app.run()
