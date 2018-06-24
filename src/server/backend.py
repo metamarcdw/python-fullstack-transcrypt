@@ -41,9 +41,22 @@ jwt._set_error_handler_callbacks(api)
 # https://github.com/vimalloc/flask-jwt-extended/issues/83
 
 
-def create_app(config_obj):
+def create_app():
+    mode = os.environ.get("TODOS_FS_MODE")
+    config_type = None
+
+    if mode == "production":
+        config_type = "config.ProductionConfig"
+    elif mode == "development":
+        config_type = "config.DevelopmentConfig"
+    elif mode == "testing":
+        config_type = "server.config.TestingConfig"
+    else:
+        raise ValueError("Mode variable not set.")
+    print(f" * Running the API in {mode} mode.")
+
     app = Flask(__name__)
-    app.config.from_object(config_obj)
+    app.config.from_object(config_type)
 
     api.init_app(app)
     cors.init_app(app)
@@ -340,16 +353,5 @@ class TodoResource(Resource):
 
 
 if __name__ == "__main__":
-    mode = os.environ.get("TODOS_FS_MODE")
-    config_type = None
-
-    if mode == "production":
-        config_type = "config.ProductionConfig"
-    elif mode == "development":
-        config_type = "config.DevelopmentConfig"
-    else:
-        raise ValueError("Mode variable not set.")
-
-    print(f" * Running the API in {mode} mode.")
-    flask_app = create_app(config_type)
+    flask_app = create_app()
     flask_app.run()
