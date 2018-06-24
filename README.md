@@ -1,5 +1,5 @@
-### Example of React and Redux with Python using Transcrypt and Component.py
-## Also uses Flask-RESTPlus with SQLAlchemy and JWT for authentication
+## Example of React and Redux with Python using Transcrypt and Component.py
+### Also uses Flask-RESTPlus with SQLAlchemy and JWT-Extended for authentication
 
 First install Python>=3.6/pip, NodeJS/npm>=5.2, and Git:  
 `sudo pacman -S python-pip npm git`  
