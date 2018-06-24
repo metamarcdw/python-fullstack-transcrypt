@@ -1,4 +1,4 @@
-import prod_secret
+from server.prod_secret import jwt_key
 
 class Config:
     DEBUG = False
@@ -10,7 +10,7 @@ class Config:
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = \
         "sqlite:////home/metamarcdw/python-fullstack-transcrypt/src/server/db.sqlite3"
-    JWT_SECRET_KEY = prod_secret.jwt_key
+    JWT_SECRET_KEY = jwt_key
 
 class DevelopmentConfig(Config):
     DEBUG = True

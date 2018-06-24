@@ -347,8 +347,6 @@ if __name__ == "__main__":
         config_type = "config.ProductionConfig"
     elif mode == "development":
         config_type = "config.DevelopmentConfig"
-    elif mode == "testing":
-        config_type = "config.TestingConfig"
     else:
         raise ValueError("Mode variable not set.")
 
