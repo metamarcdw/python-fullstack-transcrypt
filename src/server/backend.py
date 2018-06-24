@@ -45,8 +45,9 @@ def create_app():
     mode = os.environ.get("TODOS_FS_MODE")
     config_type = None
 
+    # Specifying the 'server' module is needed when run indirectly
     if mode == "production":
-        config_type = "config.ProductionConfig"
+        config_type = "server.config.ProductionConfig"
     elif mode == "development":
         config_type = "config.DevelopmentConfig"
     elif mode == "testing":
