@@ -8,6 +8,8 @@
     "win": "npx concurrently --kill-others \"npx nodemon -e py --watch src --exec \"compile\"\" \"npx webpack-dev-server\"",
     "build": "npx webpack",
     "deploy": "git subtree push --prefix dist origin gh-pages",
+    "api": "python src/server/backend.py",
+    "apiwin": "python src\\server\\backend.py",
     "apitest": "pytest",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
