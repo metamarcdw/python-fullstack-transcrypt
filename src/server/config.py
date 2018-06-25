@@ -13,8 +13,13 @@ class ProductionConfig(Config):
 
     def __init__(self):
         path = os.path.join(os.path.dirname(__file__), "prod_secret.txt")
-        with open(path, "r") as file_:
-            self.JWT_SECRET_KEY = file_.read().strip()
+        try:
+            with open(path, "r") as file_:
+                self.JWT_SECRET_KEY = file_.read().strip()
+        except FileNotFoundError as e:
+            raise FileNotFoundError("Production secret file does not exist.") from e
+        if not self.JWT_SECRET_KEY:
+            raise ValueError("Production secret file is blank.")
 
 class DevelopmentConfig(Config):
     DEBUG = True
