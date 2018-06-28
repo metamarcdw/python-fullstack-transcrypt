@@ -126,8 +126,7 @@ class UsersResource(Resource):
     @api.marshal_list_with(UserUtil.user_shape, envelope="users")
     @api.doc(responses={
         401: "Not authenticated",
-        403: "Not admin",
-        404: "Not found"
+        403: "Not admin"
     })
     def get(self):
         UserUtil.abort_if_not_admin()
