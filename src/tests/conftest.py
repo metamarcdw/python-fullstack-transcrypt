@@ -6,7 +6,7 @@ import pytest
 from flask import url_for
 from werkzeug.security import generate_password_hash
 
-from server.backend import create_app, User, db as _db
+from server.backend import create_app, User, Todo, db as _db
 
 
 @pytest.fixture(scope="session")
@@ -25,6 +25,11 @@ def db(app):
                     password_hash=generate_password_hash(password),
                     admin=admin)
 
+    def create_todo(text, user, complete=False):
+        return Todo(text=text,
+                    complete=complete,
+                    user=user)
+
     if os.path.exists(app.config['DB_PATH']):
         os.unlink(app.config['DB_PATH'])
 
@@ -32,8 +37,12 @@ def db(app):
         _db.init_app(app)
         _db.create_all()
 
-        _db.session.add(create_user("Jesus", "password", admin=True))
-        _db.session.add(create_user("Cocaine", "snowman"))
+        admin_user = create_user("Jesus", "password", admin=True)
+        regular_user = create_user("Cocaine", "snowman")
+        _db.session.add(admin_user)
+        _db.session.add(regular_user)
+        _db.session.add(create_todo("Incomplete", regular_user))
+        _db.session.add(create_todo("Complete", regular_user, complete=True))
         _db.session.commit()
 
         yield _db

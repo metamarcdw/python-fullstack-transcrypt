@@ -7,7 +7,6 @@ def test_get_all_users_unauthorized(client):
     assert res.status_code == 401
 
 
-#pylint: disable=W0621
 def test_get_all_users_forbidden(client, user_token):
     res = client.get(url_for("users_resource"), headers={
         "Authorization": f"Bearer {user_token}"
