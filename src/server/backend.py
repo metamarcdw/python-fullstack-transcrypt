@@ -123,7 +123,7 @@ class UserUtil:
 @api.route("/user")
 class UsersResource(Resource):
     @jwt_required
-    @api.marshal_with(UserUtil.user_shape, envelope="users")
+    @api.marshal_list_with(UserUtil.user_shape, envelope="users")
     @api.doc(responses={
         401: "Not authenticated",
         403: "Not admin",
@@ -267,7 +267,7 @@ class TodoUtil:
 @api.route("/todo")
 class TodosResource(Resource):
     @jwt_required
-    @api.marshal_with(TodoUtil.todo_shape, envelope="todos")
+    @api.marshal_list_with(TodoUtil.todo_shape, envelope="todos")
     @api.doc(responses={
         401: "Not authenticated",
         404: "Not found"
