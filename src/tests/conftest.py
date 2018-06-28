@@ -1,7 +1,9 @@
 import os
 import uuid
+import base64
 
 import pytest
+from flask import url_for
 from werkzeug.security import generate_password_hash
 
 from server.backend import create_app, User, db as _db
@@ -36,3 +38,22 @@ def db(app):
 
         yield _db
         _db.drop_all()
+
+
+def get_token(client, username, password):
+    bytes_ = f"{username}:{password}".encode("utf-8")
+    auth = base64.b64encode(bytes_).decode("ascii")
+    token_response = client.get(url_for("login_resource"), headers={
+        "Authorization": f"Basic {auth}"
+    })
+    return token_response.json["token"]
+
+
+@pytest.fixture
+def admin_token(client):
+    return get_token(client, "Jesus", "password")
+
+
+@pytest.fixture
+def user_token(client):
+    return get_token(client, "Cocaine", "snowman")
