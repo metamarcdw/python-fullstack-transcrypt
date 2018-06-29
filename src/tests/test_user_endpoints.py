@@ -45,7 +45,7 @@ def test_post_user_already_exists(client):
     res = client.post(url_for("users_resource"),
                       content_type="application/json",
                       data=json.dumps({
-                          "name": "Jesus",
+                          "name": "Admin",
                           "password": "password"
                       }))
     assert res.status_code == 400

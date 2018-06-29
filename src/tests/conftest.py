@@ -37,8 +37,8 @@ def db(app):
         _db.init_app(app)
         _db.create_all()
 
-        admin_user = create_user("Jesus", "password", admin=True)
-        regular_user = create_user("Cocaine", "snowman")
+        admin_user = create_user("Admin", "password", admin=True)
+        regular_user = create_user("User", "snowman")
         _db.session.add(admin_user)
         _db.session.add(regular_user)
         _db.session.add(create_todo("Incomplete", regular_user))
@@ -60,9 +60,9 @@ def get_token(client, username, password):
 
 @pytest.fixture
 def admin_token(client):
-    return get_token(client, "Jesus", "password")
+    return get_token(client, "Admin", "password")
 
 
 @pytest.fixture
 def user_token(client):
-    return get_token(client, "Cocaine", "snowman")
+    return get_token(client, "User", "snowman")
