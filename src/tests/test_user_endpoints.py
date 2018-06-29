@@ -1,3 +1,4 @@
+import json
 import pytest
 from flask import url_for
 from server.backend import UserUtil
@@ -27,3 +28,38 @@ def test_get_all_users_success(client, admin_token):
     assert users
     for user in users:
         UserUtil.user_shape.validate(user)
+
+
+def test_post_user_malformed(client):
+    res = client.post(url_for("users_resource"),
+                      content_type="application/json",
+                      data=json.dumps({
+                          "something": "wrong"
+                      }))
+    assert res.status_code == 400
+    assert "message" in res.json
+    assert res.json["message"] == "Input payload validation failed"
+
+
+def test_post_user_already_exists(client):
+    res = client.post(url_for("users_resource"),
+                      content_type="application/json",
+                      data=json.dumps({
+                          "name": "Jesus",
+                          "password": "password"
+                      }))
+    assert res.status_code == 400
+    assert "message" in res.json
+    assert res.json["message"] == "A user with this name already exists"
+
+
+def test_post_user_success(client):
+    res = client.post(url_for("users_resource"),
+                      content_type="application/json",
+                      data=json.dumps({
+                          "name": "New User",
+                          "password": "something"
+                      }))
+    assert res.status_code == 200
+    assert "new_user" in res.json
+    UserUtil.user_shape.validate(res.json["new_user"])
