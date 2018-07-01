@@ -195,7 +195,6 @@ class UserResource(Resource):
     @jwt_required
     @api.marshal_with(UserUtil.user_shape, envelope="deleted_user")
     @api.doc(responses={
-        200: "Success",
         400: "Cannot delete self",
         401: "Not authenticated",
         403: "Not admin",
@@ -336,7 +335,6 @@ class TodoResource(Resource):
     @jwt_required
     @api.marshal_with(TodoUtil.todo_shape, envelope="deleted_todo")
     @api.doc(responses={
-        200: "Success",
         401: "Not authenticated",
         404: "Not found"
     })
