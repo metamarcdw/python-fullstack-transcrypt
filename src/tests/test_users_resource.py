@@ -1,5 +1,4 @@
 import json
-import pytest
 from flask import url_for
 from server.backend import UserUtil
 

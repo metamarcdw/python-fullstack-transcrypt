@@ -158,7 +158,7 @@ class UsersResource(Resource):
 @api.route("/user/<string:public_id>")
 class UserResource(Resource):
     @jwt_required
-    @api.marshal_with(UserUtil.user_shape, envelope="users")
+    @api.marshal_with(UserUtil.user_shape, envelope="user")
     @api.doc(responses={
         401: "Not authenticated",
         403: "Not admin",

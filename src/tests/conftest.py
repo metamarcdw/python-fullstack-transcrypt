@@ -39,14 +39,25 @@ def db(app):
 
         admin_user = create_user("Admin", "password", admin=True)
         regular_user = create_user("User", "snowman")
+        promotable_user = create_user("Promotable User", "greenman")
         _db.session.add(admin_user)
         _db.session.add(regular_user)
-        _db.session.add(create_todo("Incomplete", regular_user))
-        _db.session.add(create_todo("Complete", regular_user, complete=True))
-        _db.session.commit()
+        _db.session.add(promotable_user)
 
+        incomplete_todo = create_todo("Incomplete", regular_user)
+        complete_todo = create_todo("Complete", regular_user, complete=True)
+        _db.session.add(incomplete_todo)
+        _db.session.add(complete_todo)
+
+        _db.session.commit()
         yield _db
         _db.drop_all()
+
+
+@pytest.fixture
+def user_public_id():
+    user = User.query.filter_by(name="Promotable User").first()
+    return user.public_id
 
 
 def get_token(client, username, password):
