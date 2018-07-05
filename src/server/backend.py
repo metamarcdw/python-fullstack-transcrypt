@@ -75,6 +75,9 @@ class User(db.Model):
     admin = db.Column(db.Boolean, nullable=False)
     todos = db.relationship("Todo", backref="user", cascade="all,delete")
 
+    def __repr__(self):
+        return f"<User name: {self.name}, admin: {self.admin}>"
+
 
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -83,6 +86,9 @@ class Todo(db.Model):
     user_id = db.Column(db.Integer,
                         db.ForeignKey('user.id'),
                         nullable=False)
+
+    def __repr__(self):
+        return f"<Todo text: {self.text}, complete: {self.complete}>"
 
 
 class UserUtil:
