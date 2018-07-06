@@ -6,9 +6,13 @@ try:
     with open(secret_path, "r") as file_:
         prod_secret = file_.read().strip()
 except FileNotFoundError as e:
-    raise FileNotFoundError("Production secret file does not exist.") from e
+    raise FileNotFoundError(
+        "\n * Production secret file:" +
+        f"\n\tC{secret_path[1:]}\n   does not exist.") from e
 if not prod_secret:
-    raise ValueError("Production secret file is blank.")
+    raise ValueError(
+        "\n * Production secret file:" +
+        f"\n\tC{secret_path[1:]}\n   is blank.")
 
 tempdir = os.environ["TMP"] if sys.platform == "win32" else "/tmp"
 
