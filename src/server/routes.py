@@ -174,7 +174,7 @@ class TodosResource(Resource):
 @api.route("/todo/<int:id>")
 class TodoResource(Resource):
     @jwt_required
-    @api.marshal_with(TodoUtil.todo_shape, envelope="todos")
+    @api.marshal_with(TodoUtil.todo_shape, envelope="todo")
     @api.doc(responses={
         401: "Not authenticated",
         404: "Not found"
