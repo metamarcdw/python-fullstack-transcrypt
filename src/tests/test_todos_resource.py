@@ -1,6 +1,6 @@
 import json
 from flask import url_for
-from server.backend import TodoUtil
+from server.routes import TodoUtil
 
 
 def test_get_all_todos_unauthorized(client):

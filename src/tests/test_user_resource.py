@@ -1,5 +1,5 @@
 from flask import url_for
-from server.backend import UserUtil
+from server.routes import UserUtil
 
 
 def test_get_user_unauthorized(client, user_public_id):

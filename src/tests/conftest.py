@@ -6,7 +6,8 @@ import pytest
 from flask import url_for
 from werkzeug.security import generate_password_hash
 
-from server.backend import create_app, User, Todo, db as _db
+from server import create_app, db as _db
+from server.models import User, Todo
 
 
 @pytest.fixture(scope="session")

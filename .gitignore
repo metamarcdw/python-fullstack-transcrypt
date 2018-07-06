@@ -5,3 +5,4 @@ __javascript__/
 node_modules/
 .pytest_cache/
 prod_secret.txt
+server.egg-info/

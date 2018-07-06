@@ -1,6 +1,6 @@
 import json
 from flask import url_for
-from server.backend import UserUtil
+from server.routes import UserUtil
 
 
 def test_get_all_users_unauthorized(client):

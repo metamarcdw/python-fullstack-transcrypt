@@ -1,6 +1,6 @@
 import base64
 from flask import url_for
-from server.backend import LoginResource
+from server.routes import LoginResource
 
 
 def is_login_failure(res):

@@ -1,95 +1,16 @@
-import os
-import datetime
 import uuid
-from flask import Flask, request
-from flask_restplus import Api, Resource, fields
-from flask_cors import CORS
+import datetime
+
+from flask import request
+from flask_restplus import Resource, fields
 from flask_jwt_extended import(
-    JWTManager, create_access_token, get_jwt_identity, jwt_required
+    create_access_token, get_jwt_identity, jwt_required
 )
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
 
-authorizations = {
-    "bearer": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "Authorization"
-    },
-    "basic": {
-        "type": "basic"
-    }
-}
-
-cors_resources = {
-    r"/*": {
-        "origins": [
-            "https://metamarcdw.github.io",
-            "http://localhost:3000"
-        ],
-        "supports_credentials": True
-    }
-}
-
-api = Api(authorizations=authorizations)
-cors = CORS(resources=cors_resources)
-
-db = SQLAlchemy()
-jwt = JWTManager()
-jwt._set_error_handler_callbacks(api)
-# https://github.com/vimalloc/flask-jwt-extended/issues/83
-
-
-def create_app():
-    mode = os.environ.get("TODOS_FS_MODE")
-    config_type = None
-
-    # Specifying the 'server' module is needed when run indirectly
-    if mode == "production":
-        config_type = "server.config.ProductionConfig"
-    elif mode == "development":
-        config_type = "config.DevelopmentConfig"
-    elif mode == "testing":
-        config_type = "server.config.TestingConfig"
-    else:
-        raise ValueError("Mode variable not set.")
-    print(f" * Running the API in {mode} mode.")
-
-    app = Flask(__name__)
-    app.config.from_object(config_type)
-
-    api.init_app(app)
-    cors.init_app(app)
-    db.init_app(app)
-    jwt.init_app(app)
-
-    return app
-
-
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    public_id = db.Column(db.String(30), unique=True, nullable=False)
-    name = db.Column(db.String(30), unique=True, nullable=False)
-    password_hash = db.Column(db.String(80), nullable=False)
-    admin = db.Column(db.Boolean, nullable=False)
-    todos = db.relationship("Todo", backref="user", cascade="all,delete")
-
-    def __repr__(self):
-        return f"<User name: {self.name}, admin: {self.admin}>"
-
-
-class Todo(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String(30), nullable=False)
-    complete = db.Column(db.Boolean, nullable=False)
-    user_id = db.Column(db.Integer,
-                        db.ForeignKey('user.id'),
-                        nullable=False)
-
-    def __repr__(self):
-        return f"<Todo text: {self.text}, complete: {self.complete}>"
-
+from server import api, db, authorizations
+from server.models import User, Todo
 
 class UserUtil:
     user_shape = api.model("user_shape", {
@@ -354,8 +275,3 @@ class TodoResource(Resource):
         db.session.delete(todo)
         db.session.commit()
         return todo
-
-
-if __name__ == "__main__":
-    flask_app = create_app()
-    flask_app.run()
