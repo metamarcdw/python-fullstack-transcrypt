@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/metamarcdw/python-fullstack-transcrypt.svg?branch=master)](https://travis-ci.org/metamarcdw/python-fullstack-transcrypt)
+
 ## Example of React and Redux with Python using Transcrypt and Component.py
 ### Also uses Flask-RESTPlus backend with SQLAlchemy and JWT-Extended
 
