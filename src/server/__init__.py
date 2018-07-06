@@ -65,3 +65,6 @@ def create_app():
 if __name__ == "__main__":
     flask_app = create_app()
     flask_app.run()
+
+#pylint: disable=C0413
+import server.routes
