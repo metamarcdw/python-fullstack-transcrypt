@@ -12,6 +12,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from server import api, db, authorizations
 from server.models import User, Todo
 
+
 class UserUtil:
     user_shape = api.model("user_shape", {
         "id": fields.String(
