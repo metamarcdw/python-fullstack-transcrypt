@@ -15,6 +15,7 @@
 .flex-center {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .flex-container {
@@ -35,4 +36,8 @@
 
 .green-text {
   color: green;
+}
+
+.fixed-height {
+  height: 40px
 }

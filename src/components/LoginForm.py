@@ -44,10 +44,11 @@ def LoginForm(props):
                     id="password_text" />
             </FormGroup>
             <Button
-                className="margin"
+                className="fixed-height margin"
                 type="submit"
             >Login</Button>
             <Button
+                className="fixed-height"
                 onClick={on_click_register}
             >Register</Button>
         </Form>

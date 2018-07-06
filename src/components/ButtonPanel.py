@@ -24,14 +24,17 @@ def ButtonPanel(props):
         <div className="flex-center">
             <div className="flex-container">
                 <Button
+                    className="fixed-height"
                     onClick={on_click_add}
                     color="success"
                 >Add Todo</Button>
                 <Button
+                    className="fixed-height"
                     onClick={on_click_clear}
                     color="warning"
                 >Clear Text</Button>
                 <Button
+                    className="fixed-height"
                     onClick={on_click_logout}
                 >Logout</Button>
             </div>

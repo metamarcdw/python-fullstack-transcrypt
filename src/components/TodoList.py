@@ -58,11 +58,12 @@ class TodoList(Component):
                     {todo.text}
                 </div>
                 <Button
-                    className="margin"
+                    className="fixed-height margin"
                     color="primary"
                     onClick={self.on_click_complete(todo)}
                 >Complete</Button>
                 <Button
+                    className="fixed-height"
                     color="danger"
                     onClick={self.on_click_delete(todo)}
                 >Delete</Button>
