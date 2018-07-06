@@ -5,5 +5,6 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install -e src
+  - echo "travis" > src/server/prod_secret.txt
 script:
   - pytest
