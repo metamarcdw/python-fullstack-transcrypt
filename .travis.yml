@@ -7,3 +7,8 @@ install:
   - echo "travis" > src/server/prod_secret.txt
 script:
   - pytest
+branches:
+  only:
+  - master
+  - develop
+  
