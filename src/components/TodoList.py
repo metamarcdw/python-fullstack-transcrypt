@@ -22,12 +22,13 @@ class TodoList(Component):
         return closure
 
     def on_click_delete(self, todo):
+        token = self.props.login_user["token"]
+
         def closure():
             should_delete = True
             if not todo["complete"] and not window.confirm("Delete incomplete Todo?"):
                 should_delete = False
             if should_delete:
-                token = self.props.login_user["token"]
                 self.props.delete_todo(todo["id"], token)
         return closure
 
