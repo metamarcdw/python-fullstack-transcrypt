@@ -19,11 +19,17 @@ def App(props):
             </div>
         ); """)
 
+    def on_submit(e):
+        e.preventDefault()
+
     def render_todo_panel():
         return __pragma__("xtrans", None, "{}", """ (
             <div>
                 <TodoListContainer />
-                <Form className="padding">
+                <Form
+                    className="padding"
+                    onSubmit={on_submit}
+                >
                     <FormPanelContainer />
                     <ButtonPanelContainer />
                 </Form>
