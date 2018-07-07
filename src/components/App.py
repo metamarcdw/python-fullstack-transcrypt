@@ -6,8 +6,8 @@ from containers.ButtonPanelContainer import ButtonPanelContainer
 from containers.TodoListContainer import TodoListContainer
 
 React = require("react")
-Row, Col, Jumbotron = destruct(
-    require("reactstrap"), "Row", "Col", "Jumbotron")
+Form, Row, Col, Jumbotron = destruct(
+    require("reactstrap"), "Form", "Row", "Col", "Jumbotron")
 
 
 def App(props):
@@ -19,12 +19,20 @@ def App(props):
             </div>
         ); """)
 
+    def on_submit(e):
+        e.preventDefault()
+
     def render_todo_panel():
         return __pragma__("xtrans", None, "{}", """ (
             <div>
                 <TodoListContainer />
-                <FormPanelContainer />
-                <ButtonPanelContainer />
+                <Form
+                    className="padding"
+                    onSubmit={on_submit}
+                >
+                    <FormPanelContainer />
+                    <ButtonPanelContainer />
+                </Form>
             </div>
         ); """)
 

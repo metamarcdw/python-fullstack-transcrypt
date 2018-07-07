@@ -27,6 +27,7 @@ def ButtonPanel(props):
                     className="fixed-height"
                     onClick={on_click_add}
                     color="success"
+                    type="submit"
                 >Add Todo</Button>
                 <Button
                     className="fixed-height"
