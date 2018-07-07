@@ -6,8 +6,8 @@ from containers.ButtonPanelContainer import ButtonPanelContainer
 from containers.TodoListContainer import TodoListContainer
 
 React = require("react")
-Row, Col, Jumbotron = destruct(
-    require("reactstrap"), "Row", "Col", "Jumbotron")
+Form, Row, Col, Jumbotron = destruct(
+    require("reactstrap"), "Form", "Row", "Col", "Jumbotron")
 
 
 def App(props):
@@ -23,8 +23,10 @@ def App(props):
         return __pragma__("xtrans", None, "{}", """ (
             <div>
                 <TodoListContainer />
-                <FormPanelContainer />
-                <ButtonPanelContainer />
+                <Form className="padding">
+                    <FormPanelContainer />
+                    <ButtonPanelContainer />
+                </Form>
             </div>
         ); """)
 
