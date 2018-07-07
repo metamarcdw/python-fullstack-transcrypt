@@ -59,6 +59,18 @@ def create_app():
     db.init_app(app)
     jwt.init_app(app)
 
+    @app.shell_context_processor
+    def make_shell_context():
+        from server.models import User, Todo
+        return {
+            "api": api,
+            "cors": cors,
+            "db": db,
+            "jwt": jwt,
+            "User": User,
+            "Todo": Todo
+        }
+
     return app
 
 
