@@ -1,4 +1,4 @@
-from Component_py.stubs import require, __pragma__  # __:skip
+from Component_py.stubs import require, __pragma__, window  # __:skip
 from Component_py.component import Component, destruct
 
 React = require("react")
@@ -22,8 +22,14 @@ class TodoList(Component):
         return closure
 
     def on_click_delete(self, todo):
-        token = self.props.login_user["token"]
-        return lambda: self.props.delete_todo(todo["id"], token)
+        def closure():
+            should_delete = True
+            if not todo["complete"] and not window.confirm("Delete incomplete Todo?"):
+                should_delete = False
+            if should_delete:
+                token = self.props.login_user["token"]
+                self.props.delete_todo(todo["id"], token)
+        return closure
 
     def render_spinner(self):
         loading = True
@@ -61,6 +67,7 @@ class TodoList(Component):
                     className="fixed-height margin"
                     color="primary"
                     onClick={self.on_click_complete(todo)}
+                    disabled={todo.complete}
                 >Complete</Button>
                 <Button
                     className="fixed-height"
