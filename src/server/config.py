@@ -25,10 +25,15 @@ class Config:
 
 
 class ProductionConfig(Config):
+    user = "metamarcdw"
+    pswd = "QxRTieF7NYYz8p6f"
+    db_host = "metamarcdw.mysql.pythonanywhere-services.com"
+    db_name = "todos_fs"
+    SQLALCHEMY_DATABASE_URI = \
+        f"mysql://{user}:{pswd}@{db_host}/{user}${db_name}"
+
     SQLALCHEMY_POOL_SIZE = 10
     SQLALCHEMY_POOL_RECYCLE = 280
-    SQLALCHEMY_DATABASE_URI = \
-        "mysql://metamarcdw:QxRTieF7NYYz8p6f@metamarcdw.mysql.pythonanywhere-services.com/metamarcdw$todos_fs"
     JWT_SECRET_KEY = prod_secret
 
 
