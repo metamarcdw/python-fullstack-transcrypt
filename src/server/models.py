@@ -3,9 +3,9 @@ from server import db
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    public_id = db.Column(db.String(30), unique=True, nullable=False)
+    public_id = db.Column(db.String(40), unique=True, nullable=False)
     name = db.Column(db.String(30), unique=True, nullable=False)
-    password_hash = db.Column(db.String(80), nullable=False)
+    password_hash = db.Column(db.String(100), nullable=False)
     admin = db.Column(db.Boolean, nullable=False)
     todos = db.relationship("Todo", backref="user", cascade="all,delete")
 
