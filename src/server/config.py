@@ -25,8 +25,10 @@ class Config:
 
 
 class ProductionConfig(Config):
+    SQLALCHEMY_POOL_SIZE = 10
+    SQLALCHEMY_POOL_RECYCLE = 280
     SQLALCHEMY_DATABASE_URI = \
-        "sqlite:////home/metamarcdw/python-fullstack-transcrypt/src/server/db.sqlite3"
+        "mysql://metamarcdw:QxRTieF7NYYz8p6f@metamarcdw.mysql.pythonanywhere-services.com/metamarcdw$todos_fs"
     JWT_SECRET_KEY = prod_secret
 
 
