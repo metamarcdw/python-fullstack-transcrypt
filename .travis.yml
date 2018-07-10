@@ -4,7 +4,7 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install -e src
-  - echo "travis" > src/server/prod_secret.txt
+  - echo '{"jwt_secret": "travis", "db_pswd": "travis"}' > src/server/prod_secrets.json
 script:
   - pytest
 branches:
