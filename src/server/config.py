@@ -11,7 +11,7 @@ except FileNotFoundError as e:
         "\n * Production secret file:" +
         f"\n\tC{secret_path[1:]}\n   does not exist.") from e
 
-keys = ("jwt_secret", "db_pswd")
+keys = ("jwt_secret", "db_pswd", "mail_pswd")
 if not prod_secrets or not all([key in prod_secrets for key in keys]):
     raise ValueError(
         "\n * Production secret file:" +
@@ -28,12 +28,18 @@ class Config:
 
 
 class ProductionConfig(Config):
-    user = "metamarcdw"
-    pswd = prod_secrets["db_pswd"]
+    MAIL_SERVER = "smtp.googlemail.com"
+    MAIL_PORT = 587
+    MAIL_USERNAME = "todos.fs.mailer"
+    MAIL_PASSWORD = prod_secrets["mail_pswd"]
+    ADMINS = ["marcdw87@gmail.com"]
+
+    db_user = "metamarcdw"
+    db_pswd = prod_secrets["db_pswd"]
     db_host = "metamarcdw.mysql.pythonanywhere-services.com"
     db_name = "todos_fs"
     SQLALCHEMY_DATABASE_URI = \
-        f"mysql://{user}:{pswd}@{db_host}/{user}${db_name}"
+        f"mysql://{db_user}:{db_pswd}@{db_host}/{db_user}${db_name}"
 
     SQLALCHEMY_POOL_SIZE = 10
     SQLALCHEMY_POOL_RECYCLE = 280
