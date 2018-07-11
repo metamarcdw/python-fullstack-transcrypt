@@ -4,7 +4,7 @@ from flask_jwt_extended import get_jwt_identity
 from server import api
 
 
-class UserUtil:
+class UserMixin:
     user_shape = api.model("user_shape", {
         "id": fields.String(
             description="This user's public ID",
@@ -39,7 +39,7 @@ class UserUtil:
             api.abort(403, "Must be admin")
 
 
-class TodoUtil:
+class TodoMixin:
     todo_shape = api.model("todo_shape", {
         "id": fields.Integer(
             description="A unique identifier for todos",
