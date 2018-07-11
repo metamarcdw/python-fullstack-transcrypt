@@ -1,5 +1,5 @@
 from flask import url_for
-from server.util import TodoUtil
+from server.models import Todo
 
 
 def test_get_todo_unauthorized(client):
@@ -25,7 +25,7 @@ def test_get_todo_success(client, user_token):
     })
     assert res.status_code == 200
     assert "todo" in res.json
-    TodoUtil.todo_shape.validate(res.json["todo"])
+    Todo.todo_shape.validate(res.json["todo"])
 
 
 def test_put_todo_unauthorized(client):
@@ -51,7 +51,7 @@ def test_put_todo_success(client, user_token):
     })
     assert res.status_code == 200
     assert "completed_todo" in res.json
-    TodoUtil.todo_shape.validate(res.json["completed_todo"])
+    Todo.todo_shape.validate(res.json["completed_todo"])
 
 
 def test_delete_todo_unauthorized(client):
@@ -77,4 +77,4 @@ def test_delete_todo_success(client, user_token):
     })
     assert res.status_code == 200
     assert "deleted_todo" in res.json
-    TodoUtil.todo_shape.validate(res.json["deleted_todo"])
+    Todo.todo_shape.validate(res.json["deleted_todo"])

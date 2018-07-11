@@ -1,6 +1,6 @@
 import json
 from flask import url_for
-from server.routes import TodoUtil
+from server.models import Todo
 
 
 def test_get_all_todos_unauthorized(client):
@@ -29,7 +29,7 @@ def test_get_all_todos_success(client, user_token):
     todos = res.json["todos"]
     assert todos
     for todo in todos:
-        TodoUtil.todo_shape.validate(todo)
+        Todo.todo_shape.validate(todo)
 
 
 def test_post_todo_malformed(client):
@@ -64,4 +64,4 @@ def test_post_todo_success(client, user_token):
                       })
     assert res.status_code == 200
     assert "new_todo" in res.json
-    TodoUtil.todo_shape.validate(res.json["new_todo"])
+    Todo.todo_shape.validate(res.json["new_todo"])

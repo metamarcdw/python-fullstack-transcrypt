@@ -1,5 +1,5 @@
 from flask import url_for
-from server.routes import UserUtil
+from server.models import User
 
 
 def test_get_user_unauthorized(client, user_public_id):
@@ -30,7 +30,7 @@ def test_get_user_success(client, user_public_id, admin_token):
     })
     assert res.status_code == 200
     assert "user" in res.json
-    UserUtil.user_shape.validate(res.json["user"])
+    User.user_shape.validate(res.json["user"])
 
 
 def test_put_user_unauthorized(client, user_public_id):
@@ -61,7 +61,7 @@ def test_put_user_success(client, user_public_id, admin_token):
     })
     assert res.status_code == 200
     assert "promoted_user" in res.json
-    UserUtil.user_shape.validate(res.json["promoted_user"])
+    User.user_shape.validate(res.json["promoted_user"])
 
 
 def test_delete_user_unauthorized(client, user_public_id):
@@ -92,4 +92,4 @@ def test_delete_user_success(client, user_public_id, admin_token):
     })
     assert res.status_code == 200
     assert "deleted_user" in res.json
-    UserUtil.user_shape.validate(res.json["deleted_user"])
+    User.user_shape.validate(res.json["deleted_user"])
