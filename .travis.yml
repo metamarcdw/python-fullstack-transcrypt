@@ -4,7 +4,7 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install -e src
-  - curl -o src/server/prod_secrets.json $SECRETS_URL
+  - cp src/server/mock_secrets.json src/server/prod_secrets.json
 script:
   - pytest
 branches:
