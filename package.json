@@ -1,5 +1,5 @@
 {
-  "name": "react-transcrypt",
+  "name": "python-fullstack-transcrypt",
   "version": "1.0.0",
   "description": "",
   "main": "src/__javascript__/bundle.js",
@@ -12,6 +12,7 @@
 
     "api": "FLASK_APP=server TODOS_FS_MODE=development flask run",
     "apiwin": "set FLASK_APP=server&& set TODOS_FS_MODE=development&& flask run",
+    "apiinit": "pip install -r requirements.txt",
     "apiinstall": "pip install -e src",
     "apitest": "pytest"
   },
