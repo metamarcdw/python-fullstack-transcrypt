@@ -1,6 +1,6 @@
 import json
 from flask import url_for
-from server.routes import UserUtil
+from server.models import User
 
 
 def test_get_all_users_unauthorized(client):
@@ -26,7 +26,7 @@ def test_get_all_users_success(client, admin_token):
     users = res.json["users"]
     assert users
     for user in users:
-        UserUtil.user_shape.validate(user)
+        User.user_shape.validate(user)
 
 
 def test_post_user_malformed(client):
@@ -61,4 +61,4 @@ def test_post_user_success(client):
                       }))
     assert res.status_code == 200
     assert "new_user" in res.json
-    UserUtil.user_shape.validate(res.json["new_user"])
+    User.user_shape.validate(res.json["new_user"])

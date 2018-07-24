@@ -1,11 +1,12 @@
 from server import db
+from server.mixins import UserMixin, TodoMixin
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    public_id = db.Column(db.String(30), unique=True, nullable=False)
+    public_id = db.Column(db.String(40), unique=True, nullable=False)
     name = db.Column(db.String(30), unique=True, nullable=False)
-    password_hash = db.Column(db.String(80), nullable=False)
+    password_hash = db.Column(db.String(100), nullable=False)
     admin = db.Column(db.Boolean, nullable=False)
     todos = db.relationship("Todo", backref="user", cascade="all,delete")
 
@@ -13,7 +14,7 @@ class User(db.Model):
         return f"<User name: {self.name}, admin: {self.admin}>"
 
 
-class Todo(db.Model):
+class Todo(db.Model, TodoMixin):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(30), nullable=False)
     complete = db.Column(db.Boolean, nullable=False)

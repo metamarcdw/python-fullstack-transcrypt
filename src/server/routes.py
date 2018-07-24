@@ -11,25 +11,24 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from server import api, db, authorizations
 from server.models import User, Todo
-from server.util import UserUtil, TodoUtil
 
 
 @api.route("/user")
 class UsersResource(Resource):
     @jwt_required
-    @api.marshal_list_with(UserUtil.user_shape, envelope="users")
+    @api.marshal_list_with(User.user_shape, envelope="users")
     @api.doc(responses={
         401: "Not authenticated",
         403: "Not admin"
     })
     def get(self):
-        UserUtil.abort_if_not_admin()
+        User.abort_if_not_admin()
         # Get all users
         users = User.query.all()
         return users
 
-    @api.expect(UserUtil.new_user_shape, validate=True)
-    @api.marshal_with(UserUtil.user_shape, envelope="new_user")
+    @api.expect(User.new_user_shape, validate=True)
+    @api.marshal_with(User.user_shape, envelope="new_user")
     @api.doc(responses={
         400: "Malformed request OR User exists"
     })
@@ -52,14 +51,14 @@ class UsersResource(Resource):
 @api.route("/user/<string:public_id>")
 class UserResource(Resource):
     @jwt_required
-    @api.marshal_with(UserUtil.user_shape, envelope="user")
+    @api.marshal_with(User.user_shape, envelope="user")
     @api.doc(responses={
         401: "Not authenticated",
         403: "Not admin",
         404: "Not found"
     })
     def get(self, public_id):
-        UserUtil.abort_if_not_admin()
+        User.abort_if_not_admin()
         # Get one user
         user = User.query.filter_by(public_id=public_id).first()
         if not user:
@@ -67,7 +66,7 @@ class UserResource(Resource):
         return user
 
     @jwt_required
-    @api.marshal_with(UserUtil.user_shape, envelope="promoted_user")
+    @api.marshal_with(User.user_shape, envelope="promoted_user")
     @api.doc(responses={
         400: "Already admin",
         401: "Not authenticated",
@@ -76,7 +75,7 @@ class UserResource(Resource):
     })
     def put(self, public_id):
         # Promote one user
-        UserUtil.abort_if_not_admin()
+        User.abort_if_not_admin()
         user = User.query.filter_by(public_id=public_id).first()
         if not user:
             api.abort(404, "User not found")
@@ -87,7 +86,7 @@ class UserResource(Resource):
         return user
 
     @jwt_required
-    @api.marshal_with(UserUtil.user_shape, envelope="deleted_user")
+    @api.marshal_with(User.user_shape, envelope="deleted_user")
     @api.doc(responses={
         400: "Cannot delete self",
         401: "Not authenticated",
@@ -97,7 +96,7 @@ class UserResource(Resource):
     def delete(self, public_id):
         # Delete one user
         current_user = get_jwt_identity()
-        UserUtil.abort_if_not_admin(current_user=current_user)
+        User.abort_if_not_admin(current_user=current_user)
         user = User.query.filter_by(public_id=public_id).first()
         if not user:
             api.abort(404, "User not found")
@@ -138,7 +137,7 @@ class LoginResource(Resource):
 @api.route("/todo")
 class TodosResource(Resource):
     @jwt_required
-    @api.marshal_list_with(TodoUtil.todo_shape, envelope="todos")
+    @api.marshal_list_with(Todo.todo_shape, envelope="todos")
     @api.doc(responses={
         401: "Not authenticated",
         404: "Not found"
@@ -152,8 +151,8 @@ class TodosResource(Resource):
         return user.todos
 
     @jwt_required
-    @api.expect(TodoUtil.new_todo_shape, validate=True)
-    @api.marshal_with(TodoUtil.todo_shape, envelope="new_todo")
+    @api.expect(Todo.new_todo_shape, validate=True)
+    @api.marshal_with(Todo.todo_shape, envelope="new_todo")
     @api.doc(responses={
         400: "Malformed request",
         401: "Not authenticated"
@@ -174,7 +173,7 @@ class TodosResource(Resource):
 @api.route("/todo/<int:id>")
 class TodoResource(Resource):
     @jwt_required
-    @api.marshal_with(TodoUtil.todo_shape, envelope="todo")
+    @api.marshal_with(Todo.todo_shape, envelope="todo")
     @api.doc(responses={
         401: "Not authenticated",
         404: "Not found"
@@ -189,7 +188,7 @@ class TodoResource(Resource):
         return todo
 
     @jwt_required
-    @api.marshal_with(TodoUtil.todo_shape, envelope="completed_todo")
+    @api.marshal_with(Todo.todo_shape, envelope="completed_todo")
     @api.doc(responses={
         401: "Not authenticated",
         404: "Not found"
@@ -206,7 +205,7 @@ class TodoResource(Resource):
         return todo
 
     @jwt_required
-    @api.marshal_with(TodoUtil.todo_shape, envelope="deleted_todo")
+    @api.marshal_with(Todo.todo_shape, envelope="deleted_todo")
     @api.doc(responses={
         401: "Not authenticated",
         404: "Not found"

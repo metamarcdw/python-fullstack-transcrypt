@@ -1,4 +1,6 @@
 import os
+import logging
+from logging.handlers import SMTPHandler
 
 from flask import Flask
 from flask_restplus import Api
@@ -40,7 +42,7 @@ def create_app():
     mode = os.environ.get("TODOS_FS_MODE")
     config_type = None
 
-    # Specifying the 'server' module is needed when run indirectly
+    # Specifying the "server" module is needed when run indirectly
     if mode == "production":
         config_type = "server.config.ProductionConfig"
     elif mode == "development":
@@ -59,12 +61,31 @@ def create_app():
     db.init_app(app)
     jwt.init_app(app)
 
+    @app.shell_context_processor
+    def make_shell_context():
+        from server.models import User, Todo
+        return {
+            "api": api,
+            "cors": cors,
+            "db": db,
+            "jwt": jwt,
+            "User": User,
+            "Todo": Todo
+        }
+
+    if mode == "production":
+        auth = (app.config["MAIL_USERNAME"],
+                app.config["MAIL_PASSWORD"])
+        mail_handler = SMTPHandler(
+            mailhost=(app.config["MAIL_SERVER"], app.config["MAIL_PORT"]),
+            fromaddr="no-reply@" + app.config["MAIL_SERVER"],
+            toaddrs=app.config["ADMINS"], subject="todos_fs API Failure",
+            credentials=auth, secure=())
+        mail_handler.setLevel(logging.ERROR)
+        app.logger.addHandler(mail_handler)
+
     return app
 
-
-if __name__ == "__main__":
-    flask_app = create_app()
-    flask_app.run()
 
 #pylint: disable=C0413
 import server.routes

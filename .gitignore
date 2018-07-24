@@ -4,5 +4,5 @@ db.sqlite3
 __javascript__/
 node_modules/
 .pytest_cache/
-prod_secret.txt
+prod_secrets.json
 server.egg-info/

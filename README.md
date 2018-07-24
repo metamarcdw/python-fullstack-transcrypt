@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/metamarcdw/python-fullstack-transcrypt.svg?branch=master)](https://travis-ci.org/metamarcdw/python-fullstack-transcrypt)
+[![Build Status](https://travis-ci.org/metamarcdw/python-fullstack-transcrypt.svg?branch=develop)](https://travis-ci.org/metamarcdw/python-fullstack-transcrypt)
 
 ## Example of React and Redux with Python using Transcrypt and Component.py
 ### Also uses Flask-RESTPlus backend with SQLAlchemy and JWT-Extended
@@ -6,7 +6,7 @@
 First install Python>=3.6/pip, NodeJS/npm>=5.2, and Git:  
 `sudo pacman -S python-pip npm git`  
 Next, clone the repo  
-`git clone https://github.com/metamarcdw/react-redux-transcrypt`  
+`git clone https://github.com/metamarcdw/python-fullstack-transcrypt`  
 Set up your React/Transcrypt environment:  
 (Use of a virtual environment is recommended but not required)  
 ```
@@ -14,7 +14,7 @@ mkvirtualenv transcrypt
 pip install git+https://github.com/qquick/transcrypt@master#egg=transcrypt
 pip install git+https://github.com/metamarcdw/Component.py@master#egg=Component_py
 
-cd react-redux-transcrypt/
+cd python-fullstack-transcrypt/
 npm install
 npm install -g babel-cli  # If running Windows
 ```

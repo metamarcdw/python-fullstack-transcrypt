@@ -4,6 +4,10 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install -e src
-  - echo "travis" > src/server/prod_secret.txt
+  - cp src/server/mock_secrets.json src/server/prod_secrets.json
 script:
   - pytest
+branches:
+  only:
+  - master
+  - develop
