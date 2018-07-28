@@ -10,8 +10,7 @@
     "deploy": "git subtree push --prefix dist origin gh-pages",
     "test": "echo \"Error: no test specified\" && exit 1",
 
-    "api": "FLASK_APP=server TODOS_FS_MODE=development flask run",
-    "apiwin": "set FLASK_APP=server&& set TODOS_FS_MODE=development&& flask run",
+    "api": "python -m server",
     "apiinit": "pip install -r requirements.txt",
     "apiinstall": "pip install -e src",
     "apitest": "pytest"
