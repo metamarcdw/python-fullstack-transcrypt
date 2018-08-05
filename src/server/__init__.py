@@ -7,6 +7,8 @@ from flask_restplus import Api
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 authorizations = {
     "bearer": {
@@ -36,6 +38,8 @@ db = SQLAlchemy()
 jwt = JWTManager()
 jwt._set_error_handler_callbacks(api)
 # https://github.com/vimalloc/flask-jwt-extended/issues/83
+limiter = Limiter(
+    key_func=get_remote_address, default_limits=["200 per day", "50 per hour"])
 
 
 def create_app():
@@ -60,6 +64,7 @@ def create_app():
     cors.init_app(app)
     db.init_app(app)
     jwt.init_app(app)
+    limiter.init_app(app)
 
     @app.shell_context_processor
     def make_shell_context():
