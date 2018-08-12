@@ -4,12 +4,11 @@
   "description": "",
   "main": "src/__javascript__/bundle.js",
   "scripts": {
-    "start": "npx concurrently --kill-others \"npx nodemon -e py --watch src --exec \"make compile\"\" \"npx webpack-dev-server\"",
-    "win": "npx concurrently --kill-others \"npx nodemon -e py --watch src --exec \"compile\"\" \"npx webpack-dev-server\"",
-    "build": "npx webpack",
+    "start": "npx concurrently --kill-others \"npx nodemon -e py --watch src --exec \"make compile\"\" \"npx webpack-dev-server --open --config webpack.dev.js\"",
+    "win": "npx concurrently --kill-others \"npx nodemon -e py --watch src --exec \"compile\"\" \"npx webpack-dev-server --open --config webpack.dev.js\"",
+    "build": "npx webpack --config webpack.prod.js",
     "deploy": "git subtree push --prefix dist origin gh-pages",
     "test": "echo \"Error: no test specified\" && exit 1",
-
     "api": "python -m server",
     "apiinit": "pip install -r requirements.txt",
     "apiinstall": "pip install -e src",
@@ -25,7 +24,8 @@
     "nodemon": "^1.17.2",
     "webpack": "^4.1.1",
     "webpack-cli": "^2.0.12",
-    "webpack-dev-server": "^3.1.1"
+    "webpack-dev-server": "^3.1.1",
+    "webpack-merge": "^4.1.4"
   },
   "dependencies": {
     "axios": "^0.18.0",
