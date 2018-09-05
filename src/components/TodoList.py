@@ -25,27 +25,28 @@ class TodoList(Component):
         token = self.props.login_user["token"]
 
         def closure():
-            should_delete = True
-            if not todo["complete"] and not window.confirm("Delete incomplete Todo?"):
-                should_delete = False
-            if should_delete:
+            if todo.complete or window.confirm('Delete incomplete Todo?'):
                 self.props.delete_todo(todo["id"], token)
         return closure
 
     def render_spinner(self):
+        if not self.props.todo_list["loading"]:
+            return None
         loading = True
         return __pragma__("xtrans", None, "{}", """ (
-            <div className="flex-center">
+            <div className="d-flex justify-content-center align-items-center">
                 <RingLoader
                     color="#999"
+                    size={42}
                     loading={loading} />
+                Loading..
             </div>
         ); """)
 
     def render_checkmark(self, todo):
         if todo["complete"]:
             return __pragma__("xtrans", None, "{}", """ (
-                <div className="flex-column flex-center margin">
+                <div className="d-flex flex-column justify-content-center align-items-center margin">
                     <FontAwesomeIcon
                         name="check-circle"
                         size="2x"
@@ -57,11 +58,11 @@ class TodoList(Component):
     def render_list_item(self, todo):
         return __pragma__("xtrans", None, "{}", """ (
             <ListGroupItem
-                className="flex-center"
+                className="d-flex justify-content-center align-items-center"
                 key={todo.id}
             >
                 {self.render_checkmark(todo)}
-                <div className="list-item">
+                <div className="d-flex flex-grow-1 font-lg">
                     {todo.text}
                 </div>
                 <Button
@@ -80,9 +81,6 @@ class TodoList(Component):
 
     def render(self):
         todo_list = self.props["todo_list"]
-        if todo_list["loading"]:
-            return self.render_spinner()
-
         list_items = map(self.render_list_item, todo_list["todos"])
         return __pragma__("xtrans", None, "{}", """ (
             <div>
@@ -90,5 +88,6 @@ class TodoList(Component):
                     {list_items}
                 </ListGroup>
                 <span className="red-text">{todo_list.error}</span>
+                {self.render_spinner()}
             </div>
         ); """)

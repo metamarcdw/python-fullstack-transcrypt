@@ -48,8 +48,8 @@ def App(props):
                 xs="12"
             >
                 <Jumbotron>
-                    <div className="flex-column">
-                        <div className="flex-center padding">
+                    <div className="d-flex flex-column">
+                        <div className="d-flex justify-content-center align-items-center padding">
                             <h2>My Todos</h2>
                         </div>
                         {visible_component}

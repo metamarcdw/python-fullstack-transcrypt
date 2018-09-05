@@ -21,8 +21,8 @@ def ButtonPanel(props):
         props.logout_user()
 
     return __pragma__("xtrans", None, "{}", """ (
-        <div className="flex-center">
-            <div className="flex-container">
+        <div className="d-flex justify-content-center align-items-center">
+            <div className="d-flex justify-content-around width-80">
                 <Button
                     className="fixed-height"
                     onClick={on_click_add}

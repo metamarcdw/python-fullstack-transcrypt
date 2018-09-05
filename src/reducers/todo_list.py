@@ -1,9 +1,9 @@
 from Component_py.stubs import Object  # __:skip
 from actions.types import (
     FETCH_ALL_TODOS_PENDING, FETCH_ALL_TODOS_FULFILLED, FETCH_ALL_TODOS_REJECTED,
-    ADD_NEW_TODO_PENDING, ADD_NEW_TODO_FULFILLED, ADD_NEW_TODO_REJECTED,
-    COMPLETE_TODO_PENDING, COMPLETE_TODO_FULFILLED, COMPLETE_TODO_REJECTED,
-    DELETE_TODO_PENDING, DELETE_TODO_FULFILLED, DELETE_TODO_REJECTED
+    ADD_NEW_TODO_FULFILLED, ADD_NEW_TODO_REJECTED,
+    COMPLETE_TODO_FULFILLED, COMPLETE_TODO_REJECTED,
+    DELETE_TODO_FULFILLED, DELETE_TODO_REJECTED
 )
 
 
@@ -17,17 +17,17 @@ initial_state = {
 def todo_list_reducer(state=initial_state, action=None):
     type_ = action["type"]
 
-    if type_ in (FETCH_ALL_TODOS_PENDING, ADD_NEW_TODO_PENDING,
-                 COMPLETE_TODO_PENDING, DELETE_TODO_PENDING):
+    if type_ == FETCH_ALL_TODOS_PENDING:
         return Object.assign({}, state, {
-            "loading": True
+            "loading": True,
+            "todos": []
         })
 
     elif type_ in (ADD_NEW_TODO_REJECTED, COMPLETE_TODO_REJECTED,
                    DELETE_TODO_REJECTED):
-        msg = action.payload.response.data["message"]
-        if not msg:
-            msg = "Unknown Error."
+        response = action.payload["response"] or None
+        data = response["data"] if response and response["data"] else None
+        msg =  data["message"] if data and data["message"] else "Unknown Error."
         return Object.assign({}, state, {
             "loading": False,
             "error": msg
@@ -38,10 +38,9 @@ def todo_list_reducer(state=initial_state, action=None):
             "loading": False,
             "todos": []
         }
-        msg = action.payload.response.data["message"]
-
-        if not msg:
-            msg = "Unknown Error."
+        response = action.payload["response"] or None
+        data = response["data"] if response and response["data"] else None
+        msg =  data["message"] if data and data["message"] else "Unknown Error."
 
         if "No todos found." not in msg:
             mutation["error"] = msg
