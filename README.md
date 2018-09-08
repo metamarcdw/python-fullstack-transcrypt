@@ -3,6 +3,9 @@
 ## Example of React and Redux with Python using Transcrypt and Component.py
 ### Also uses Flask-RESTPlus backend with SQLAlchemy and JWT-Extended
 
+Are your eyes burning? Check out the regular JavaScript version:
+https://github.com/metamarcdw/react-redux-todos
+
 First install Python>=3.6/pip, NodeJS/npm>=5.2, and Git:  
 `sudo pacman -S python-pip npm git`  
 Next, clone the repo  
