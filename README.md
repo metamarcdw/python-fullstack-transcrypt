@@ -14,7 +14,7 @@ Set up your React/Transcrypt environment:
 (Use of a virtual environment is recommended but not required)  
 ```
 mkvirtualenv transcrypt
-pip install git+https://github.com/qquick/transcrypt@master#egg=transcrypt
+pip install git+https://github.com/qquick/transcrypt@a182cc#egg=transcrypt
 pip install git+https://github.com/metamarcdw/Component.py@master#egg=Component_py
 
 cd python-fullstack-transcrypt/
