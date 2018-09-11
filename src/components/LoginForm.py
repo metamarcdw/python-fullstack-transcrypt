@@ -11,28 +11,31 @@ class LoginForm(Component):
         self.props.login_form_update(e.target.id, e.target.value)
 
     def on_submit_login(self, e):
-        username, password = destruct(
-            self.props["login_form"], "username_text", "password_text")
+        username, password, clear_login_form, login_user = destruct(self.props,
+            "username_text", "password_text", "clear_login_form", "login_user")
         if username and password:
-            self.props.clear_login_form()
-            self.props.login_user(username, password)
+            clear_login_form()
+            login_user(username, password)
         e.preventDefault()
 
     def on_click_register(self, e):
-        username, password = destruct(
-            self.props["login_form"], "username_text", "password_text")
+        username, password, clear_login_form, register_user = destruct(self.props,
+            "username_text", "password_text", "clear_login_form", "register_user")
         if username and password:
-            self.props.clear_login_form()
-            self.props.register_user(username, password)
+            clear_login_form()
+            register_user(username, password)
 
     def render(self):
+        username_text, password_text = destruct(self.props,
+            "username_text", "password_text")
+
         return __pragma__("xtrans", None, "{}", """ (
             <Form className="padding" onSubmit={self.on_submit_login}>
                 <FormGroup>
                     <Label for="username_text">Enter your username</Label>
                     <Input
                         onChange={self.on_input_change}
-                        value={self.props.login_form.username_text}
+                        value={username_text}
                         placeholder="Your Username"
                         id="username_text" />
                 </FormGroup>
@@ -40,7 +43,7 @@ class LoginForm(Component):
                     <Label for="password_text">Enter your password</Label>
                     <Input
                         onChange={self.on_input_change}
-                        value={self.props.login_form.password_text}
+                        value={password_text}
                         type="password"
                         id="password_text" />
                 </FormGroup>

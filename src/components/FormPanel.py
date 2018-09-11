@@ -16,7 +16,7 @@ class FormPanel(Component):
                 <Label for="text_input">Enter new todo text:</Label>
                 <Input
                     onChange={self.on_text_change}
-                    value={self.props.form_panel.text}
+                    value={self.props.text}
                     id="text_input"
                     placeholder="What to do?" />
             </FormGroup>

@@ -1,13 +1,18 @@
 from Component_py.stubs import require  # __:skip
+from Component_py.component import destruct
 from actions.actions import fetch_all_todos, complete_todo, delete_todo
 from components.TodoList import TodoList
 connect = require("react-redux").connect
 
 
 def mapStateToProps(state):
+    todos, loading, error = destruct(state["todo_list"],
+        "todos", "loading", "error")
     return {
-        "todo_list": state["todo_list"],
-        "login_user": state["login_user"]
+        "token": state.login_user["token"],
+        "todos": todos,
+        "loading": loading,
+        "error": error
     }
 
 

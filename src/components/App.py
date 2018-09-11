@@ -29,7 +29,7 @@ class App(Component):
                 <TodoListContainer />
                 <Form
                     className="padding"
-                    onSubmit={on_submit}
+                    onSubmit={self.on_submit}
                 >
                     <FormPanelContainer />
                     <ButtonPanelContainer />
@@ -38,7 +38,7 @@ class App(Component):
         ); """)
 
     def render(self):
-        logged_in, error = destruct(self.props["login_user"], "logged_in", "error")
+        logged_in, error = destruct(self.props, "logged_in", "error")
         visible_component = self.render_todo_panel() if logged_in else self.render_login_panel()
 
         return __pragma__("xtrans", None, "{}", """ (

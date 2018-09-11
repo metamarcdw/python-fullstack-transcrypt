@@ -6,8 +6,8 @@ connect = require("react-redux").connect
 
 def mapStateToProps(state):
     return {
-        "login_user": state["login_user"],
-        "form_panel": state["form_panel"]
+        "text": state.form_panel["text"],
+        "token": state.login_user["token"]
     }
 
 
