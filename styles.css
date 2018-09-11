@@ -1,28 +1,3 @@
-.padding {
-  padding: 1.55rem;
-}
-
-.margin {
-  margin-left: .4rem;
-  margin-right: 1.55rem;
-}
-
-.width-80 {
-  width: 80%;
-}
-
-.font-lg {
-  font-size: 1.3rem;
-}
-
-.red-text {
-  color: red;
-}
-
-.green-text {
-  color: green;
-}
-
 .fixed-height {
   height: 2.5rem;
 }
