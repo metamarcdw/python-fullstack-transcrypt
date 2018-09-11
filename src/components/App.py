@@ -34,7 +34,7 @@ class App(Component):
             <div>
                 <TodoListContainer />
                 <Form
-                    className="padding"
+                    className="p-4"
                     onSubmit={self.on_submit}
                 >
                     <FormPanelContainer />
@@ -57,11 +57,11 @@ class App(Component):
                 >
                     <Jumbotron>
                         <div className="d-flex flex-column">
-                            <div className="d-flex justify-content-center align-items-center padding">
+                            <div className="d-flex justify-content-center align-items-center p-4">
                                 <h2>My Todos</h2>
                             </div>
                             {visible_component}
-                            <span className="red-text">{error}</span>
+                            <span className="text-danger">{error}</span>
                         </div>
                     </Jumbotron>
                 </Col>

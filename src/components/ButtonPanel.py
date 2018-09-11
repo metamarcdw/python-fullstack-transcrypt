@@ -34,7 +34,7 @@ class ButtonPanel(Component):
     def render(self):
         return __pragma__("xtrans", None, "{}", """ (
             <div className="d-flex justify-content-center align-items-center">
-                <div className="d-flex justify-content-around width-80">
+                <div className="d-flex justify-content-around w-75">
                     <Button
                         className="fixed-height"
                         onClick={self.on_click_add}

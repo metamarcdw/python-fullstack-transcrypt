@@ -40,7 +40,7 @@ class LoginForm(Component):
             "username_text", "password_text")
 
         return __pragma__("xtrans", None, "{}", """ (
-            <Form className="padding" onSubmit={self.on_submit_login}>
+            <Form className="p-4" onSubmit={self.on_submit_login}>
                 <FormGroup>
                     <Label for="username_text">Enter your username</Label>
                     <Input
@@ -58,7 +58,7 @@ class LoginForm(Component):
                         id="password_text" />
                 </FormGroup>
                 <Button
-                    className="fixed-height margin"
+                    className="fixed-height ml-2 mr-4"
                     type="submit"
                 >Login</Button>
                 <Button

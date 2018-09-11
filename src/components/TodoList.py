@@ -59,11 +59,11 @@ class TodoList(Component):
             return None
 
         return __pragma__("xtrans", None, "{}", """ (
-            <div className="d-flex flex-column justify-content-center align-items-center margin">
+            <div className="d-flex flex-column justify-content-center align-items-center ml-2 mr-4">
                 <FontAwesomeIcon
                     name="check-circle"
                     size="2x"
-                    className="green-text" />
+                    className="text-success" />
             </div>
         ); """)
 
@@ -74,11 +74,11 @@ class TodoList(Component):
                 key={todo.id}
             >
                 {self.render_checkmark(todo)}
-                <div className="d-flex flex-grow-1 font-lg">
-                    {todo.text}
+                <div className="d-flex flex-grow-1">
+                    <h5>{todo.text}</h5>
                 </div>
                 <Button
-                    className="fixed-height margin"
+                    className="fixed-height ml-2 mr-4"
                     color="primary"
                     onClick={self.on_click_complete(todo)}
                     disabled={todo.complete}
@@ -100,7 +100,7 @@ class TodoList(Component):
                 <ListGroup>
                     {list_items}
                 </ListGroup>
-                <span className="red-text">{error}</span>
+                <span className="text-danger">{error}</span>
                 {self.render_spinner()}
             </div>
         ); """)
