@@ -29,7 +29,7 @@ def login_user_reducer(state=initial_state, action=None):
     elif type_ in (REGISTER_USER_REJECTED, LOGIN_USER_REJECTED):
         response = action.payload["response"] or None
         data = response["data"] if response and response["data"] else None
-        msg =  data["message"] if data and data["message"] else "Unknown Error."
+        msg =  data["message"] if data and data["message"] else "Login Error. Please try again."
         return Object.assign({}, state, {
             "loading": False,
             "error": msg
