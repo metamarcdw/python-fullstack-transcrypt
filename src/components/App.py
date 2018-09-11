@@ -1,5 +1,6 @@
+from Component_py.component import Component, destruct
 from Component_py.stubs import require, __pragma__  # __:skip
-from Component_py.component import destruct
+
 from containers.LoginFormContainer import LoginFormContainer
 from containers.FormPanelContainer import FormPanelContainer
 from containers.ButtonPanelContainer import ButtonPanelContainer
@@ -10,8 +11,8 @@ Form, Row, Col, Jumbotron = destruct(
     require("reactstrap"), "Form", "Row", "Col", "Jumbotron")
 
 
-def App(props):
-    def render_login_panel():
+class App(Component):
+    def render_login_panel(self):
         return __pragma__("xtrans", None, "{}", """ (
             <div>
                 <h5>Please Login:</h5>
@@ -19,10 +20,10 @@ def App(props):
             </div>
         ); """)
 
-    def on_submit(e):
+    def on_submit(self, e):
         e.preventDefault()
 
-    def render_todo_panel():
+    def render_todo_panel(self):
         return __pragma__("xtrans", None, "{}", """ (
             <div>
                 <TodoListContainer />
@@ -36,26 +37,27 @@ def App(props):
             </div>
         ); """)
 
-    logged_in, error = destruct(props["login_user"], "logged_in", "error")
-    visible_component = render_todo_panel() if logged_in else render_login_panel()
+    def render(self):
+        logged_in, error = destruct(self.props["login_user"], "logged_in", "error")
+        visible_component = self.render_todo_panel() if logged_in else self.render_login_panel()
 
-    return __pragma__("xtrans", None, "{}", """ (
-        <Row>
-            <Col
-                lg={{size: 6, offset: 3}}
-                md={{size: 8, offset: 2}}
-                sm={{size: 10, offset: 1}}
-                xs="12"
-            >
-                <Jumbotron>
-                    <div className="d-flex flex-column">
-                        <div className="d-flex justify-content-center align-items-center padding">
-                            <h2>My Todos</h2>
+        return __pragma__("xtrans", None, "{}", """ (
+            <Row>
+                <Col
+                    lg={{size: 6, offset: 3}}
+                    md={{size: 8, offset: 2}}
+                    sm={{size: 10, offset: 1}}
+                    xs="12"
+                >
+                    <Jumbotron>
+                        <div className="d-flex flex-column">
+                            <div className="d-flex justify-content-center align-items-center padding">
+                                <h2>My Todos</h2>
+                            </div>
+                            {visible_component}
+                            <span className="red-text">{error}</span>
                         </div>
-                        {visible_component}
-                        <span className="red-text">{error}</span>
-                    </div>
-                </Jumbotron>
-            </Col>
-        </Row>
-    ); """)
+                    </Jumbotron>
+                </Col>
+            </Row>
+        ); """)
