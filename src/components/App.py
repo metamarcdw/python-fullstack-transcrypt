@@ -7,11 +7,17 @@ from containers.ButtonPanelContainer import ButtonPanelContainer
 from containers.TodoListContainer import TodoListContainer
 
 React = require("react")
+PropTypes = require("prop-types")
 Form, Row, Col, Jumbotron = destruct(
     require("reactstrap"), "Form", "Row", "Col", "Jumbotron")
 
 
 class App(Component):
+    propTypes = {
+        "logged_in": PropTypes.bool.isRequired,
+        "error": PropTypes.string
+    }
+
     def render_login_panel(self):
         return __pragma__("xtrans", None, "{}", """ (
             <div>

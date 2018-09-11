@@ -2,6 +2,7 @@ from Component_py.component import Component, destruct
 from Component_py.stubs import require, __pragma__, window  # __:skip
 
 React = require("react")
+PropTypes = require("prop-types")
 ListGroup, ListGroupItem, Button = destruct(
     require("reactstrap"), "ListGroup", "ListGroupItem", "Button")
 RingLoader = require("react-spinners").RingLoader
@@ -9,11 +10,22 @@ FontAwesomeIcon = require("react-fontawesome")
 
 
 class TodoList(Component):
+    propTypes = {
+        "token": PropTypes.string.isRequired,
+        "todos": PropTypes.array.isRequired,
+        "loading": PropTypes.bool.isRequired,
+        "error": PropTypes.string,
+        "fetch_all_todos": PropTypes.func.isRequired,
+        "complete_todo": PropTypes.func.isRequired,
+        "delete_todo": PropTypes.func.isRequired
+    }
+
     def componentDidMount(self):
         self.props.fetch_all_todos(self.props["token"])
 
     def on_click_complete(self, todo):
         token, complete_todo = destruct(self.props, "token", "complete_todo")
+
         def closure():
             if not todo["complete"]:
                 complete_todo(todo["id"], token)
@@ -21,6 +33,7 @@ class TodoList(Component):
 
     def on_click_delete(self, todo):
         token, delete_todo = destruct(self.props, "token", "delete_todo")
+
         def closure():
             if todo["complete"] or window.confirm('Delete incomplete Todo?'):
                 delete_todo(todo["id"], token)

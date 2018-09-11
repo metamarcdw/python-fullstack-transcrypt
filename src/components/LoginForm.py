@@ -2,11 +2,21 @@ from Component_py.component import Component, destruct
 from Component_py.stubs import require, __pragma__  # __:skip
 
 React = require("react")
+PropTypes = require("prop-types")
 Form, FormGroup, Label, Input, Button = destruct(
     require("reactstrap"), "Form", "FormGroup", "Label", "Input", "Button")
 
 
 class LoginForm(Component):
+    propTypes = {
+        "username_text": PropTypes.string,
+        "password_text": PropTypes.string,
+        "login_form_update": PropTypes.func.isRequired,
+        "clear_login_form": PropTypes.func.isRequired,
+        "login_user": PropTypes.func.isRequired,
+        "register_user": PropTypes.func.isRequired
+    }
+
     def on_input_change(self, e):
         self.props.login_form_update(e.target.id, e.target.value)
 

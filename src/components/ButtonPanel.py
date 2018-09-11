@@ -2,10 +2,19 @@ from Component_py.component import Component, destruct
 from Component_py.stubs import require, __pragma__  # __:skip
 
 React = require("react")
+PropTypes = require("prop-types")
 Button = require("reactstrap").Button
 
 
 class ButtonPanel(Component):
+    propTypes = {
+        "text": PropTypes.string,
+        "token": PropTypes.string.isRequired,
+        "add_new_todo": PropTypes.func.isRequired,
+        "form_panel_update": PropTypes.func.isRequired,
+        "logout_user": PropTypes.func.isRequired
+    }
+
     def on_click_add(self):
         text, token, form_panel_update, add_new_todo = destruct(self.props,
             "text", "token", "form_panel_update", "add_new_todo")
