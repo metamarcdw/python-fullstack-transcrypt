@@ -18,9 +18,8 @@ class ButtonPanel(Component):
     def on_click_add(self):
         text, token, form_panel_update, add_new_todo = destruct(
             self.props, "text", "token", "form_panel_update", "add_new_todo")
-        if text:
-            add_new_todo(text, token)
-            form_panel_update("")
+        add_new_todo(text, token)
+        form_panel_update("")
 
     def on_click_clear(self):
         text, form_panel_update = destruct(

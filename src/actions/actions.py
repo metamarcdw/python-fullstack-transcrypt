@@ -1,6 +1,6 @@
 from Component_py.stubs import require, console  # __:skip
 from actions.types import (
-    FETCH_ALL_TODOS, COMPLETE_TODO, DELETE_TODO, ADD_NEW_TODO,
+    FETCH_ALL_TODOS, COMPLETE_TODO, DELETE_TODO, ADD_NEW_TODO, ADD_NEW_TODO_REJECTED,
     REGISTER_USER, REGISTER_USER_REJECTED, LOGIN_USER, LOGOUT_USER,
     FORM_PANEL_UPDATE, LOGIN_FORM_UPDATE, CLEAR_LOGIN_FORM
 )
@@ -39,6 +39,14 @@ def delete_todo(id_, token):
 
 
 def add_new_todo(text, token):
+    if not text:
+        return {
+            "type": ADD_NEW_TODO_REJECTED,
+            "payload": {"response": {"data": {
+                "message": "Please fill out the form."
+            }}}
+        }
+
     new_todo = {"text": text}
     return {
         "type": ADD_NEW_TODO,

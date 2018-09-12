@@ -22,11 +22,9 @@ class FormPanel(Component):
             <FormGroup>
                 <Label for="text_input">Enter new todo text:</Label>
                 <Input
-                    className="no-shadow"
                     onChange={self.on_text_change}
                     value={self.props.text}
                     id="text_input"
-                    placeholder="What to do?"
-                    required={required} />
+                    placeholder="What to do?" />
             </FormGroup>
         ); """)

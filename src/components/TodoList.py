@@ -26,19 +26,21 @@ class TodoList(Component):
         fetch_all_todos(token)
 
     def on_click_complete(self, todo):
+        complete, id_ = destruct(todo, "complete", "id")
         token, complete_todo = destruct(self.props, "token", "complete_todo")
 
         def closure():
-            if not todo["complete"]:
-                complete_todo(todo["id"], token)
+            if not complete:
+                complete_todo(id_, token)
         return closure
 
     def on_click_delete(self, todo):
+        complete, id_ = destruct(todo, "complete", "id")
         token, delete_todo = destruct(self.props, "token", "delete_todo")
 
         def closure():
-            if todo["complete"] or window.confirm('Delete incomplete Todo?'):
-                delete_todo(todo["id"], token)
+            if complete or window.confirm('Delete incomplete Todo?'):
+                delete_todo(id_, token)
         return closure
 
     def render_checkmark(self, todo):
