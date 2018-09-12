@@ -1,5 +1,5 @@
-from Component_py.component import Component, destruct
 from Component_py.stubs import require, __pragma__  # __:skip
+from Component_py.component import Component, destruct
 
 React = require("react")
 PropTypes = require("prop-types")
