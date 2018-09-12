@@ -21,21 +21,21 @@ class LoginForm(Component):
         self.props.login_form_update(e.target.id, e.target.value)
 
     def on_submit_login(self, e):
-        username, password, clear_login_form, login_user = destruct(self.props,
-            "username_text", "password_text", "clear_login_form", "login_user")
+        username, password, clear_login_form, login_user = destruct(
+            self.props, "username_text", "password_text", "clear_login_form", "login_user")
         clear_login_form()
         login_user(username, password)
         e.preventDefault()
 
     def on_click_register(self, e):
-        username, password, clear_login_form, register_user = destruct(self.props,
-            "username_text", "password_text", "clear_login_form", "register_user")
+        username, password, clear_login_form, register_user = destruct(
+            self.props, "username_text", "password_text", "clear_login_form", "register_user")
         clear_login_form()
         register_user(username, password)
 
     def render(self):
-        username_text, password_text = destruct(self.props,
-            "username_text", "password_text")
+        username_text, password_text = destruct(
+            self.props, "username_text", "password_text")
         required = True
 
         return __pragma__("xtrans", None, "{}", """ (

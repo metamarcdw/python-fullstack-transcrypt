@@ -8,8 +8,8 @@ connect = require("react-redux").connect
 
 
 def mapStateToProps(state):
-    username_text, password_text = destruct(state["login_form"],
-        "username_text", "password_text")
+    username_text, password_text = destruct(
+        state["login_form"], "username_text", "password_text")
     return {
         "username_text": username_text,
         "password_text": password_text

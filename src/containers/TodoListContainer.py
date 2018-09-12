@@ -6,8 +6,8 @@ connect = require("react-redux").connect
 
 
 def mapStateToProps(state):
-    todos, loading, error = destruct(state["todo_list"],
-        "todos", "loading", "error")
+    todos, loading, error = destruct(
+        state["todo_list"], "todos", "loading", "error")
     return {
         "token": state.login_user["token"],
         "todos": todos,

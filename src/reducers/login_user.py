@@ -15,28 +15,33 @@ initial_state = {
 
 def login_user_reducer(state=initial_state, action=None):
     type_ = action["type"]
+
     if type_ == LOGIN_USER_PENDING:
         return Object.assign({}, state, {
             "loading": True,
             "error": None
         })
+
     elif type_ == LOGIN_USER_FULFILLED:
         return Object.assign({}, state, {
             "loading": False,
             "logged_in": True,
             "token": action.payload.data["token"]
         })
+
     elif type_ in (REGISTER_USER_REJECTED, LOGIN_USER_REJECTED):
         response = action.payload["response"] or None
         data = response["data"] if response and response["data"] else None
-        msg =  data["message"] if data and data["message"] else "Login Error. Please try again."
+        msg = data["message"] if data and data["message"] else "Login Error. Please try again."
         return Object.assign({}, state, {
             "loading": False,
             "error": msg
         })
+
     elif type_ == LOGOUT_USER:
         return Object.assign({}, state, {
             "logged_in": False,
             "token": None
         })
+
     return state

@@ -3,6 +3,7 @@ React = require("react")
 PropTypes = require("prop-types")
 RingLoader = require("react-spinners").RingLoader
 
+
 def Spinner(props):
     loading = props["loading"]
     if not loading:
@@ -17,6 +18,7 @@ def Spinner(props):
             Loading..
         </div>
     ); """)
+
 
 Spinner.propTypes = {
     "loading": PropTypes.bool.isRequired

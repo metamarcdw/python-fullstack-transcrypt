@@ -27,7 +27,7 @@ def todo_list_reducer(state=initial_state, action=None):
                    DELETE_TODO_REJECTED):
         response = action.payload["response"] or None
         data = response["data"] if response and response["data"] else None
-        msg =  data["message"] if data and data["message"] else "Unknown Error."
+        msg = data["message"] if data and data["message"] else "Unknown Error."
         return Object.assign({}, state, {
             "loading": False,
             "error": msg
@@ -40,7 +40,7 @@ def todo_list_reducer(state=initial_state, action=None):
         }
         response = action.payload["response"] or None
         data = response["data"] if response and response["data"] else None
-        msg =  data["message"] if data and data["message"] else "Unknown Error."
+        msg = data["message"] if data and data["message"] else "Unknown Error."
 
         if "No todos found." not in msg:
             mutation["error"] = msg
@@ -62,6 +62,7 @@ def todo_list_reducer(state=initial_state, action=None):
 
     elif type_ == COMPLETE_TODO_FULFILLED:
         completed_todo = action.payload.data["completed_todo"]
+
         def complete(todo):
             if todo["id"] == completed_todo["id"]:
                 todo["complete"] = True

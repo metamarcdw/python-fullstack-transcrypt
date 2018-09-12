@@ -77,7 +77,8 @@ class TodoList(Component):
         ); """)
 
     def render(self):
-        todos, error, loading = destruct(self.props, "todos", "error", "loading")
+        todos, error, loading = destruct(
+            self.props, "todos", "error", "loading")
         list_items = map(self.render_list_item, todos)
 
         return __pragma__("xtrans", None, "{}", """ (
