@@ -21,7 +21,9 @@ class TodoList(Component):
     }
 
     def componentDidMount(self):
-        self.props.fetch_all_todos(self.props["token"])
+        token, fetch_all_todos = destruct(
+            self.props, "token", "fetch_all_todos")
+        fetch_all_todos(token)
 
     def on_click_complete(self, todo):
         token, complete_todo = destruct(self.props, "token", "complete_todo")
