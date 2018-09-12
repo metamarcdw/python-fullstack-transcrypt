@@ -23,39 +23,42 @@ class LoginForm(Component):
     def on_submit_login(self, e):
         username, password, clear_login_form, login_user = destruct(self.props,
             "username_text", "password_text", "clear_login_form", "login_user")
-        if username and password:
-            clear_login_form()
-            login_user(username, password)
+        clear_login_form()
+        login_user(username, password)
         e.preventDefault()
 
     def on_click_register(self, e):
         username, password, clear_login_form, register_user = destruct(self.props,
             "username_text", "password_text", "clear_login_form", "register_user")
-        if username and password:
-            clear_login_form()
-            register_user(username, password)
+        clear_login_form()
+        register_user(username, password)
 
     def render(self):
         username_text, password_text = destruct(self.props,
             "username_text", "password_text")
+        required = True
 
         return __pragma__("xtrans", None, "{}", """ (
             <Form className="p-4" onSubmit={self.on_submit_login}>
                 <FormGroup>
                     <Label for="username_text">Enter your username</Label>
                     <Input
+                        className="no-shadow"
                         onChange={self.on_input_change}
                         value={username_text}
                         placeholder="Your Username"
-                        id="username_text" />
+                        id="username_text"
+                        required={required} />
                 </FormGroup>
                 <FormGroup>
                     <Label for="password_text">Enter your password</Label>
                     <Input
+                        className="no-shadow"
                         onChange={self.on_input_change}
                         value={password_text}
                         type="password"
-                        id="password_text" />
+                        id="password_text"
+                        required={required} />
                 </FormGroup>
                 <Button
                     className="fixed-height ml-2 mr-4"

@@ -17,13 +17,16 @@ class FormPanel(Component):
         self.props.form_panel_update(e.target.value)
 
     def render(self):
+        required = True
         return __pragma__("xtrans", None, "{}", """ (
             <FormGroup>
                 <Label for="text_input">Enter new todo text:</Label>
                 <Input
+                    className="no-shadow"
                     onChange={self.on_text_change}
                     value={self.props.text}
                     id="text_input"
-                    placeholder="What to do?" />
+                    placeholder="What to do?"
+                    required={required} />
             </FormGroup>
         ); """)

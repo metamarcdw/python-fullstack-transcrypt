@@ -8,7 +8,6 @@ def Spinner(props):
     if not loading:
         return None
 
-    loading = True
     return __pragma__("xtrans", None, "{}", """ (
         <div className="d-flex justify-content-center align-items-center">
             <RingLoader

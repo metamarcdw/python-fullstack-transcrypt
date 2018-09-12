@@ -4,7 +4,9 @@ from actions.types import (
     REGISTER_USER, REGISTER_USER_REJECTED, LOGIN_USER, LOGOUT_USER,
     FORM_PANEL_UPDATE, LOGIN_FORM_UPDATE, CLEAR_LOGIN_FORM
 )
-axios = require("axios").create({"baseURL": "https://metamarcdw.pythonanywhere.com"})
+axios = require("axios").create({
+    "baseURL": "https://metamarcdw.pythonanywhere.com"
+})
 
 
 def bearer(token):
@@ -45,10 +47,19 @@ def add_new_todo(text, token):
 
 
 def register_user(username, password):
+    if not username or not password:
+        return {
+            "type": REGISTER_USER_REJECTED,
+            "payload": {"response": {"data": {
+                "message": "Please fill out the form."
+            }}}
+        }
+
     new_user = {
         "name": username,
         "password": password
     }
+
     def thunk(dispatch):
         axios.post("/user", new_user)\
             .then(lambda json: dispatch(login_user(username, password)))\
