@@ -1,11 +1,11 @@
 from Component_py.component import Component, destruct
 from Component_py.stubs import require, __pragma__, window  # __:skip
+from components.Spinner import Spinner
 
 React = require("react")
 PropTypes = require("prop-types")
 ListGroup, ListGroupItem, Button = destruct(
     require("reactstrap"), "ListGroup", "ListGroupItem", "Button")
-RingLoader = require("react-spinners").RingLoader
 FontAwesomeIcon = require("react-fontawesome")
 
 
@@ -38,21 +38,6 @@ class TodoList(Component):
             if todo["complete"] or window.confirm('Delete incomplete Todo?'):
                 delete_todo(todo["id"], token)
         return closure
-
-    def render_spinner(self):
-        if not self.props["loading"]:
-            return None
-
-        loading = True
-        return __pragma__("xtrans", None, "{}", """ (
-            <div className="d-flex justify-content-center align-items-center">
-                <RingLoader
-                    color="#999"
-                    size={42}
-                    loading={loading} />
-                Loading..
-            </div>
-        ); """)
 
     def render_checkmark(self, todo):
         if not todo["complete"]:
@@ -92,7 +77,7 @@ class TodoList(Component):
         ); """)
 
     def render(self):
-        todos, error = destruct(self.props, "todos", "error")
+        todos, error, loading = destruct(self.props, "todos", "error", "loading")
         list_items = map(self.render_list_item, todos)
 
         return __pragma__("xtrans", None, "{}", """ (
@@ -101,6 +86,6 @@ class TodoList(Component):
                     {list_items}
                 </ListGroup>
                 <span className="text-danger">{error}</span>
-                {self.render_spinner()}
+                <Spinner loading={loading} />
             </div>
         ); """)

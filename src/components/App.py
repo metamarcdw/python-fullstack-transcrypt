@@ -5,6 +5,7 @@ from containers.LoginFormContainer import LoginFormContainer
 from containers.FormPanelContainer import FormPanelContainer
 from containers.ButtonPanelContainer import ButtonPanelContainer
 from containers.TodoListContainer import TodoListContainer
+from components.Spinner import Spinner
 
 React = require("react")
 PropTypes = require("prop-types")
@@ -44,7 +45,8 @@ class App(Component):
         ); """)
 
     def render(self):
-        logged_in, error = destruct(self.props, "logged_in", "error")
+        logged_in, loading, error = destruct(self.props,
+            "logged_in", "loading", "error")
         visible_component = self.render_todo_panel() if logged_in else self.render_login_panel()
 
         return __pragma__("xtrans", None, "{}", """ (
@@ -61,6 +63,7 @@ class App(Component):
                                 <h2>My Todos</h2>
                             </div>
                             {visible_component}
+                            <Spinner loading={loading} />
                             <span className="text-danger">{error}</span>
                         </div>
                     </Jumbotron>

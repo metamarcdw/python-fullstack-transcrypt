@@ -5,10 +5,12 @@ connect = require("react-redux").connect
 
 
 def mapStateToProps(state):
-    text, logged_in = destruct(state["login_user"], "text", "logged_in")
+    logged_in, loading, error = destruct(state["login_user"],
+        "logged_in", "loading", "error")
     return {
-        "text": text,
-        "logged_in": logged_in
+        "logged_in": logged_in,
+        "loading": loading,
+        "error": error
     }
 
 
