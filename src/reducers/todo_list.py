@@ -20,7 +20,8 @@ def todo_list_reducer(state=initial_state, action=None):
     if type_ == FETCH_ALL_TODOS_PENDING:
         return Object.assign({}, state, {
             "loading": True,
-            "todos": []
+            "todos": [],
+            "error": None
         })
 
     elif type_ in (ADD_NEW_TODO_REJECTED, COMPLETE_TODO_REJECTED,
