@@ -19,7 +19,6 @@ pip install git+https://github.com/metamarcdw/Component.py@master#egg=Component_
 
 cd python-fullstack-transcrypt/
 npm install
-npm install -g babel-cli  # If running Windows
 ```
 We can now compile with Transcrypt and run our Webpack server  
 ```
