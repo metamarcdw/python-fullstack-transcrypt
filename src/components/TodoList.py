@@ -86,11 +86,11 @@ class TodoList(Component):
         list_items = map(self.render_list_item, todos)
 
         return __pragma__("xtrans", None, "{}", """ (
-            <div>
+            <React.Fragment>
                 <ListGroup>
                     {list_items}
                 </ListGroup>
                 <span className="text-danger">{error}</span>
                 <Spinner loading={loading} />
-            </div>
+            </React.Fragment>
         ); """)
